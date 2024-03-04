@@ -1,4 +1,5 @@
 using Okane.Application;
+using Okane.Domain;
 
 namespace Okane.Tests;
 

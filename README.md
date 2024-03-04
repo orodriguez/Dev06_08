@@ -35,9 +35,16 @@ Install the following extensions:
 
 ## Architecture
 
+### Okane.Domain
+
+Contain business rules for the application.
+
+* Entities
+* Domain Services
+
 ### Okane.Application
 
-Contains the business rules for the application.
+Contains coordination logic entities and gateways.
 
 * Services
 * Repository Interfaces

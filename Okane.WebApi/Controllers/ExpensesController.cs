@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Okane.Application;
+using Okane.Domain;
 
 namespace Okane.WebApi.Controllers;
 
@@ -7,9 +8,9 @@ namespace Okane.WebApi.Controllers;
 [Route("[controller]")]
 public class ExpensesController : ControllerBase
 {
-    private readonly ExpenseService _expensesService;
+    private readonly IExpenseService _expensesService;
 
-    public ExpensesController(ExpenseService expensesService) => 
+    public ExpensesController(IExpenseService expensesService) => 
         _expensesService = expensesService;
     
     // POST /expenses

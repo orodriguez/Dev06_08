@@ -1,6 +1,8 @@
+using Okane.Domain;
+
 namespace Okane.Application;
 
-public class ExpenseService
+public class ExpenseService : IExpenseService
 {
     private readonly IExpensesRepository _expenses;
 
