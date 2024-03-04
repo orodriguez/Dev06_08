@@ -12,4 +12,7 @@ public class ExpenseService
         _expenses.Add(expense);
         return expense;
     }
+
+    public IEnumerable<Expense> RetrieveAll() => 
+        _expenses.All();
 }

@@ -20,4 +20,6 @@ public class InMemoryExpensesRepository : IExpensesRepository
         expense.Id = _nextId++;
         _expenses.Add(expense);
     }
+
+    public IEnumerable<Expense> All() => _expenses;
 }
