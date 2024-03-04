@@ -22,3 +22,13 @@ dotnet test
 ## How to create a solution using CLI
 
 Read this [article](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-new)
+
+## Development Environment
+
+Download [VS Code](https://code.visualstudio.com/download)
+
+Install the following extensions:
+
+* [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
+* [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit)
+* [.NET Test Explorer](https://marketplace.visualstudio.com/items?itemName=formulahendry.dotnet-test-explorer)
