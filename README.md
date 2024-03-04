@@ -32,3 +32,24 @@ Install the following extensions:
 * [C#](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csharp)
 * [C# Dev Kit](https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit)
 * [.NET Test Explorer](https://marketplace.visualstudio.com/items?itemName=formulahendry.dotnet-test-explorer)
+
+## Architecture
+
+### Okane.Application
+
+Contains the business rules for the application.
+
+* Services
+* Repository Interfaces
+
+### Okane.WebApi
+
+Http interface for the application.
+
+* Controllers
+* Dependency Injection Configuration
+
+### Okane.Tests
+
+* Unit tests
+* Sample test data
