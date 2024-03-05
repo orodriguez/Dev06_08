@@ -15,6 +15,9 @@ public class ExpenseService : IExpenseService
         return expense;
     }
 
+    public void RemoveExpense(int id) =>
+        _expenses.Remove(id);
+
     public IEnumerable<Expense> RetrieveAll() => 
         _expenses.All();
 }
