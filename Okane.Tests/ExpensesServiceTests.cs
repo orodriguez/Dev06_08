@@ -72,11 +72,12 @@ public class ExpensesServiceTests
             Description = "Presidente Light 16Onz"
         });
 
-        _expenseService.RemoveExpense(1);
+        var expense = _expenseService.RemoveExpense(1);
 
         var allExpenses = _expenseService.RetrieveAll()
             .ToArray();
      
         Assert.Equal(1, allExpenses.Length);
+        Assert.Equal("Alturo Fuente, churchill, maduro.", expense.Description);
     }
 }

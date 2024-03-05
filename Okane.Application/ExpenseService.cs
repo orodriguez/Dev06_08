@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using Okane.Domain;
 
 namespace Okane.Application;
@@ -9,14 +10,15 @@ public class ExpenseService : IExpenseService
     public ExpenseService(IExpensesRepository expenses) => 
         _expenses = expenses;
 
-    public Expense RegisterExpense(Expense expense)
+    public Expense? RegisterExpense(Expense expense)
     {
         _expenses.Add(expense);
         return expense;
     }
 
-    public void RemoveExpense(int id) =>
-        _expenses.Remove(id);
+    public Expense? RemoveExpense(int id) {
+        return _expenses.Remove(id);
+    }
 
     public IEnumerable<Expense> RetrieveAll() => 
         _expenses.All();
