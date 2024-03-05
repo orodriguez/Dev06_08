@@ -19,6 +19,11 @@ donet build
 dotnet test
 ```
 
+## Run Web App
+```bash
+dotnet run --project Okane.WebApi/Okane.WebApi.csproj
+```
+
 ## How to create a solution using CLI
 
 Read this [article](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-new)
@@ -44,7 +49,7 @@ Contain business rules for the application.
 
 ### Okane.Application
 
-Contains coordination logic entities and gateways.
+Contains coordination logic between entities and gateways.
 
 * Services
 * Repository Interfaces
@@ -60,3 +65,5 @@ Http interface for the application.
 
 * Unit tests
 * Sample test data
+
+## [Class Notes](https://workflowy.com/s/alterna-dev06-08/S5PTSCJX0RKDHBXS)
