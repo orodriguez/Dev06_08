@@ -20,4 +20,8 @@ public class ExpensesController : ControllerBase
     // GET /expenses
     [HttpGet]
     public IEnumerable<Expense> Get() => _expensesService.RetrieveAll();
+
+    // POST /expenses
+    [HttpDelete]
+    public Expense Delete(int id) => _expensesService.RemoveExpense(id);
 }
