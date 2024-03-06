@@ -11,7 +11,7 @@ public class InMemoryExpensesRepository : IExpensesRepository
     {
     }
 
-    private InMemoryExpensesRepository(IList<Expense> expenses) => 
+    private InMemoryExpensesRepository(IList<Expense> expenses) =>
         _expenses = expenses;
 
 
@@ -19,6 +19,18 @@ public class InMemoryExpensesRepository : IExpensesRepository
     {
         expense.Id = _nextId++;
         _expenses.Add(expense);
+    }
+
+    public void Delete(int id)
+    {
+        for (int i = 0; i < _expenses.Count; i++)
+        {
+            if (_expenses[i].Id == id)
+            {
+                _expenses.RemoveAt(i);
+                i--;
+            }
+        }
     }
 
     public IEnumerable<Expense> All() => _expenses;

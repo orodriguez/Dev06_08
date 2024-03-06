@@ -6,8 +6,9 @@ public class ExpenseService : IExpenseService
 {
     private readonly IExpensesRepository _expenses;
 
-    public ExpenseService(IExpensesRepository expenses) => 
+    public ExpenseService(IExpensesRepository expenses) =>
         _expenses = expenses;
+
 
     public Expense RegisterExpense(Expense expense)
     {
@@ -15,6 +16,19 @@ public class ExpenseService : IExpenseService
         return expense;
     }
 
-    public IEnumerable<Expense> RetrieveAll() => 
+    public IEnumerable<Expense> RetrieveAll() =>
         _expenses.All();
+
+
+    public Expense DeleteExpense(int id)
+    {
+        var expenseToDelete = _expenses.All().FirstOrDefault(expense => expense.Id == id);
+
+        if (expenseToDelete != null)
+        {
+            _expenses.Delete(id);
+        }
+
+        return expenseToDelete!;
+    }
 }
