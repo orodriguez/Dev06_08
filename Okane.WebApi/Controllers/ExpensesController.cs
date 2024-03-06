@@ -15,9 +15,16 @@ public class ExpensesController : ControllerBase
     
     // POST /expenses
     [HttpPost]
-    public Expense Post(Expense expense) => _expensesService.RegisterExpense(expense);
+    public Expense Post(Expense expense) => 
+        _expensesService.RegisterExpense(expense);
     
     // GET /expenses
     [HttpGet]
-    public IEnumerable<Expense> Get() => _expensesService.RetrieveAll();
+    public IEnumerable<Expense> Get() => 
+        _expensesService.RetrieveAll();
+
+    // DELETE /expenses/:id
+    [HttpDelete("{id}")]
+    public bool Delete(int id) => 
+        _expensesService.Delete(id);
 }

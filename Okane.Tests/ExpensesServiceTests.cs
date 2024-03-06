@@ -6,11 +6,12 @@ namespace Okane.Tests;
 public class ExpensesServiceTests
 {
     private readonly ExpenseService _expenseService;
+    private readonly InMemoryExpensesRepository _expensesRepository;
 
     public ExpensesServiceTests()
     {
-        var expensesRepository = new InMemoryExpensesRepository();
-        _expenseService = new ExpenseService(expensesRepository);
+        _expensesRepository = new InMemoryExpensesRepository();
+        _expenseService = new ExpenseService(_expensesRepository);
     }
 
     [Fact]
@@ -49,5 +50,25 @@ public class ExpensesServiceTests
 
         var firstExpense = allExpenses.First();
         Assert.Equal(10, firstExpense.Amount);
+    }
+
+    [Fact]
+    public void Delete()
+    {
+        _expenseService.RegisterExpense(new Expense
+        {
+            Category = "Food",
+            Amount = 15
+        });
+
+        _expenseService.RegisterExpense(new Expense
+        {
+            Category = "Fun",
+            Amount = 10
+        });
+
+        Assert.True(_expenseService.Delete(1));
+        
+        Assert.Equal(1, _expensesRepository.Count());
     }
 }

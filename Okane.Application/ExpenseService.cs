@@ -4,17 +4,20 @@ namespace Okane.Application;
 
 public class ExpenseService : IExpenseService
 {
-    private readonly IExpensesRepository _expenses;
+    private readonly IExpensesRepository _expensesRepository;
 
-    public ExpenseService(IExpensesRepository expenses) => 
-        _expenses = expenses;
+    public ExpenseService(IExpensesRepository expensesRepository) => 
+        _expensesRepository = expensesRepository;
 
     public Expense RegisterExpense(Expense expense)
     {
-        _expenses.Add(expense);
+        _expensesRepository.Add(expense);
         return expense;
     }
 
     public IEnumerable<Expense> RetrieveAll() => 
-        _expenses.All();
+        _expensesRepository.All();
+
+    public bool Delete(int id) => 
+        _expensesRepository.Delete(id);
 }
