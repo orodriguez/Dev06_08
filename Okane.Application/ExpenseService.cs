@@ -17,4 +17,22 @@ public class ExpenseService : IExpenseService
 
     public IEnumerable<Expense> RetrieveAll() => 
         _expenses.All();
+
+
+    public bool DeleteExpense(int expenseId) 
+    {
+        var expenseToDelete = this._expenses.GetById(expenseId);
+
+        //We must make sure we did recieve something (that it actually exist)
+        if (expenseToDelete != null)
+        {
+            this._expenses.Remove(expenseToDelete);
+            return true;
+        }
+        else 
+        {
+            return false;
+        }
+    
+    }
 }
