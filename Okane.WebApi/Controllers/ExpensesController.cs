@@ -25,4 +25,23 @@ public class ExpensesController : ControllerBase
     // GET /expenses
     [HttpGet]
     public IEnumerable<Expense> Get() => _expensesService.RetrieveAll();
+
+
+    //DELETE /expenses/{id}
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id) 
+    {
+        bool deleted = this._expensesService.DeleteExpense(id);
+
+        if (deleted)
+        {
+            return Ok();
+        }
+        else
+        {
+
+            return NotFound();
+        }
+    }
+    
 }

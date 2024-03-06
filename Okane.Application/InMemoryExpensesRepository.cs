@@ -22,4 +22,27 @@ public class InMemoryExpensesRepository : IExpensesRepository
     }
 
     public IEnumerable<Expense> All() => _expenses;
+
+    //Lets return an Expense by an id
+    public Expense GetById(int id)
+    {
+        //Expense tempExpense;
+        for (int index = 0; index < this._expenses.Count; index++)
+        {
+            var currentExpenseId = this._expenses[index].Id;
+            if (currentExpenseId == id)
+            {
+                  return  this._expenses[index];
+            }
+        
+        }
+
+        return null;
+    }
+
+    //Removing an expense from the list
+    public void Remove(Expense expense)
+    {
+        this._expenses.Remove(expense);
+    }
 }
