@@ -6,5 +6,6 @@ public interface IExpensesRepository
 {
     void Add(Expense expense);
     IEnumerable<Expense> All();
-    bool Delete(int id);
+    void Delete(int id);
+    Expense? ById(int id);
 }

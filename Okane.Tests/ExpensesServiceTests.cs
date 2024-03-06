@@ -71,4 +71,8 @@ public class ExpensesServiceTests
         
         Assert.Equal(1, _expensesRepository.Count());
     }
+    
+    [Fact]
+    public void Delete_NotFound() => 
+        Assert.False(_expenseService.Delete(1));
 }

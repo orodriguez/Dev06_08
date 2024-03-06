@@ -18,6 +18,14 @@ public class ExpenseService : IExpenseService
     public IEnumerable<Expense> RetrieveAll() => 
         _expensesRepository.All();
 
-    public bool Delete(int id) => 
+    public bool Delete(int id)
+    {
+        var expenseToDelete = _expensesRepository.ById(id);
+
+        if (expenseToDelete == null)
+            return false;
+        
         _expensesRepository.Delete(id);
+        return true;
+    }
 }

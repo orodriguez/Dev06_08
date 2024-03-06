@@ -23,17 +23,15 @@ public class InMemoryExpensesRepository : IExpensesRepository
 
     public IEnumerable<Expense> All() => _expenses;
     
-    public bool Delete(int id)
+    public void Delete(int id)
     {
         var expenseToDelete = _expenses
-            .FirstOrDefault(expense => expense.Id == id);
-
-        if (expenseToDelete == null)
-            return false;
-        
+            .First(expense => expense.Id == id);
         _expenses.Remove(expenseToDelete);
-        return true;
     }
+
+    public Expense? ById(int id) => 
+        _expenses.FirstOrDefault(expense => expense.Id == id);
 
     public int Count() => _expenses.Count;
 }
