@@ -25,6 +25,8 @@ public class ExpensesController : ControllerBase
 
     // GET /expenses/:id
     [HttpGet("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ExpenseResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public ActionResult<ExpenseResponse> Get(int id)
     {
         var response = _expensesService.ById(id);
