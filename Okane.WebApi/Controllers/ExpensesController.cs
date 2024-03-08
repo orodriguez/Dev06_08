@@ -23,6 +23,17 @@ public class ExpensesController : ControllerBase
     public IEnumerable<ExpenseResponse> Get(string? category) => 
         _expensesService.Search(category);
 
+    // GET /expenses/:id
+    [HttpGet("{id}")]
+    public ActionResult<ExpenseResponse> Get(int id)
+    {
+        var response = _expensesService.ById(id);
+        if (response == null)
+            return NotFound();
+        
+        return Ok(response);
+    }
+
     // DELETE /expenses/:id
     [HttpDelete("{id}")]
     public bool Delete(int id) => 

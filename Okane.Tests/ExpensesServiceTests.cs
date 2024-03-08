@@ -29,6 +29,31 @@ public class ExpensesServiceTests
         Assert.Equal("Groceries", response.Category);
         Assert.Equal("Description", response.Description);
     }
+    
+    [Fact]
+    public void ById()
+    {
+        var registerExpenseResponse = _expenseService.RegisterExpense(new CreateExpenseRequest
+        {
+            Category = "Groceries",
+            Amount = 10,
+            Description = "Description"
+        });
+
+        var expenseResponse = _expenseService.ById(registerExpenseResponse.Id);
+        
+        Assert.Equal(1, registerExpenseResponse.Id);
+        Assert.Equal(10, registerExpenseResponse.Amount);
+        Assert.Equal("Groceries", registerExpenseResponse.Category);
+        Assert.Equal("Description", registerExpenseResponse.Description);
+    }
+    
+    [Fact]
+    public void ById_NotFound()
+    {
+        var expenseResponse = _expenseService.ById(1);
+        Assert.Null(expenseResponse);
+    }
 
     [Fact]
     public void SearchExpenses()

@@ -23,6 +23,13 @@ public class ExpenseService : IExpenseService
         return CreateExpenseResponse(expense);
     }
 
+    public ExpenseResponse? ById(int id)
+    {
+        var expense = _expensesRepository.ById(id);
+
+        return expense == null ? null : CreateExpenseResponse(expense);
+    }
+
     public IEnumerable<ExpenseResponse> Search(string? category = null) => 
         _expensesRepository
             .Search(category)
