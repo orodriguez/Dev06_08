@@ -23,9 +23,9 @@ public class ExpenseService : IExpenseService
         return CreateExpenseResponse(expense);
     }
 
-    public IEnumerable<ExpenseResponse> RetrieveAll() => 
+    public IEnumerable<ExpenseResponse> Search(string? category = null) => 
         _expensesRepository
-            .All()
+            .Search(category)
             .Select(CreateExpenseResponse);
 
     public bool Delete(int id)

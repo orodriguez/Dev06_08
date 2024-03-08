@@ -31,7 +31,7 @@ public class ExpensesServiceTests
     }
 
     [Fact]
-    public void RetrieveAllExpenses()
+    public void SearchExpenses()
     {
         _expenseService.RegisterExpense(new CreateExpenseRequest
         {
@@ -46,12 +46,39 @@ public class ExpensesServiceTests
             Amount = 20
         });
 
-        var allExpenses = _expenseService.RetrieveAll()
+        var allExpenses = _expenseService.Search()
             .ToArray();
         
         Assert.Equal(2, allExpenses.Length);
 
         var firstExpense = allExpenses.First();
+        Assert.Equal(1, firstExpense.Id);
+        Assert.Equal(10, firstExpense.Amount);
+        Assert.Equal("Groceries", firstExpense.Category);
+        Assert.Equal("My Description", firstExpense.Description);
+    }
+    
+    [Fact]
+    public void SearchExpensesByCategory()
+    {
+        _expenseService.RegisterExpense(new CreateExpenseRequest
+        {
+            Category = "Groceries",
+            Amount = 10,
+            Description = "My Description"
+        });
+        
+        _expenseService.RegisterExpense(new CreateExpenseRequest
+        {
+            Category = "Entertainment",
+            Amount = 20
+        });
+
+        var expenses = _expenseService
+            .Search(category: "Groceries")
+            .ToArray();
+        
+        var firstExpense = Assert.Single(expenses);
         Assert.Equal(1, firstExpense.Id);
         Assert.Equal(10, firstExpense.Amount);
         Assert.Equal("Groceries", firstExpense.Category);

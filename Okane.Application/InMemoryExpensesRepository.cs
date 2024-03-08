@@ -21,8 +21,11 @@ public class InMemoryExpensesRepository : IExpensesRepository
         _expenses.Add(expense);
     }
 
-    public IEnumerable<Expense> All() => _expenses;
-    
+    public IEnumerable<Expense> Search(string? categoryName = null) => 
+        categoryName != null 
+            ? _expenses.Where(expense => expense.Category == categoryName) 
+            : _expenses;
+
     public void Delete(int id)
     {
         var expenseToDelete = _expenses

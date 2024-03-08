@@ -22,7 +22,7 @@ public class DependencyInjectionTests
 
         var expensesService = provider.GetRequiredService<IExpenseService>();
         
-        Assert.Empty(expensesService.RetrieveAll());
+        Assert.Empty(expensesService.Search());
     }
     
     [Fact]
