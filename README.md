@@ -56,6 +56,14 @@ Contains coordination logic between entities and gateways.
 Implement logic that works as an intermediary between the data-access/gateway layer
 and entities.
 
+#### DTOs
+
+Objects that work as inputs and outputs for service objects.
+
+#### Validators
+
+Validate DTOs.
+
 * Repository Interfaces
 
 #### Repository Implementation 
