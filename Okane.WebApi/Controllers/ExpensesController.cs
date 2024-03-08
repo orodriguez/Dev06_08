@@ -15,12 +15,12 @@ public class ExpensesController : ControllerBase
     
     // POST /expenses
     [HttpPost]
-    public Expense Post(Expense expense) => 
-        _expensesService.RegisterExpense(expense);
+    public ExpenseResponse Post(CreateExpenseRequest request) => 
+        _expensesService.RegisterExpense(request);
     
     // GET /expenses
     [HttpGet]
-    public IEnumerable<Expense> Get() => 
+    public IEnumerable<ExpenseResponse> Get() => 
         _expensesService.RetrieveAll();
 
     // DELETE /expenses/:id

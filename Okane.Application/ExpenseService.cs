@@ -9,14 +9,24 @@ public class ExpenseService : IExpenseService
     public ExpenseService(IExpensesRepository expensesRepository) => 
         _expensesRepository = expensesRepository;
 
-    public Expense RegisterExpense(Expense expense)
+    public ExpenseResponse RegisterExpense(CreateExpenseRequest request)
     {
+        var expense = new Expense
+        {
+            Amount = request.Amount,
+            Description = request.Description,
+            Category = request.Category
+        };
+        
         _expensesRepository.Add(expense);
-        return expense;
+        
+        return CreateExpenseResponse(expense);
     }
 
-    public IEnumerable<Expense> RetrieveAll() => 
-        _expensesRepository.All();
+    public IEnumerable<ExpenseResponse> RetrieveAll() => 
+        _expensesRepository
+            .All()
+            .Select(CreateExpenseResponse);
 
     public bool Delete(int id)
     {
@@ -28,4 +38,13 @@ public class ExpenseService : IExpenseService
         _expensesRepository.Delete(id);
         return true;
     }
+
+    private static ExpenseResponse CreateExpenseResponse(Expense expense) =>
+        new()
+        {
+            Id = expense.Id,
+            Category = expense.Category,
+            Description = expense.Description,
+            Amount = expense.Amount
+        };
 }
