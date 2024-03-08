@@ -1,31 +1,31 @@
+
+using System.Collections.Generic;
 using Okane.Domain;
 
-namespace Okane.Application;
-
-public class ExpenseService : IExpenseService
+namespace Okane.Application
 {
-    private readonly IExpensesRepository _expensesRepository;
-
-    public ExpenseService(IExpensesRepository expensesRepository) => 
-        _expensesRepository = expensesRepository;
-
-    public Expense RegisterExpense(Expense expense)
+    public class ExpenseService : IExpenseService
     {
-        _expensesRepository.Add(expense);
-        return expense;
-    }
+        private readonly IExpensesRepository _expensesRepository;
 
-    public IEnumerable<Expense> RetrieveAll() => 
-        _expensesRepository.All();
+        public ExpenseService(IExpensesRepository expensesRepository)
+        {
+            _expensesRepository = expensesRepository;
+        }
 
-    public bool Delete(int id)
-    {
-        var expenseToDelete = _expensesRepository.ById(id);
+        public Expense RegisterExpense(Expense expense)
+        {
+            return _expensesRepository.AddExpense(expense);
+        }
 
-        if (expenseToDelete == null)
-            return false;
-        
-        _expensesRepository.Delete(id);
-        return true;
+        public IEnumerable<Expense> RetrieveAll()
+        {
+            return _expensesRepository.GetAllExpenses();
+        }
+
+        public bool Delete(int expenseId)
+        {
+            return _expensesRepository.DeleteExpense(expenseId);
+        }
     }
 }

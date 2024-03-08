@@ -1,37 +1,40 @@
+
+using System.Collections.Generic;
 using Okane.Domain;
 
-namespace Okane.Application;
-
-public class InMemoryExpensesRepository : IExpensesRepository
+namespace Okane.Application
 {
-    private int _nextId = 1;
-    private readonly IList<Expense> _expenses;
-
-    public InMemoryExpensesRepository() : this(new List<Expense>())
+    public class InMemoryExpensesRepository : IExpensesRepository
     {
+        private readonly List<Expense> _expenses = new List<Expense>();
+        private int _nextId = 1;
+
+        public Expense AddExpense(Expense expense)
+        {
+            expense.Id = _nextId++;
+            _expenses.Add(expense);
+            return expense;
+        }
+
+        public IEnumerable<Expense> GetAllExpenses()
+        {
+            return _expenses;
+        }
+
+        public bool DeleteExpense(int expenseId)
+        {
+            var expense = _expenses.Find(e => e.Id == expenseId);
+            if (expense != null)
+            {
+                _expenses.Remove(expense);
+                return true;
+            }
+            return false;
+        }
+
+        public int Count()
+        {
+            throw new NotImplementedException();
+        }
     }
-
-    private InMemoryExpensesRepository(IList<Expense> expenses) => 
-        _expenses = expenses;
-
-
-    public void Add(Expense expense)
-    {
-        expense.Id = _nextId++;
-        _expenses.Add(expense);
-    }
-
-    public IEnumerable<Expense> All() => _expenses;
-    
-    public void Delete(int id)
-    {
-        var expenseToDelete = _expenses
-            .First(expense => expense.Id == id);
-        _expenses.Remove(expenseToDelete);
-    }
-
-    public Expense? ById(int id) => 
-        _expenses.FirstOrDefault(expense => expense.Id == id);
-
-    public int Count() => _expenses.Count;
 }
