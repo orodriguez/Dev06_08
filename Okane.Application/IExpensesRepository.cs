@@ -1,11 +1,11 @@
 using Okane.Domain;
 
-namespace Okane.Application;
-
-public interface IExpensesRepository
+namespace Okane.Application
 {
-    void Add(Expense expense);
-    IEnumerable<Expense> All();
-    void Delete(int id);
-    Expense? ById(int id);
+    public interface IExpensesRepository
+    {
+        Expense AddExpense(Expense expense);
+        IEnumerable<Expense> GetAllExpenses();
+        bool DeleteExpense(int expenseId);
+    }
 }

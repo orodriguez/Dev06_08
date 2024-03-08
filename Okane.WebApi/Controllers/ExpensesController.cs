@@ -2,29 +2,42 @@ using Microsoft.AspNetCore.Mvc;
 using Okane.Application;
 using Okane.Domain;
 
-namespace Okane.WebApi.Controllers;
-
-[ApiController]
-[Route("[controller]")]
-public class ExpensesController : ControllerBase
+namespace Okane.WebApi.Controllers
 {
-    private readonly IExpenseService _expensesService;
+    [Route("api/[controller]")]
+    [ApiController]
+    public class ExpensesController : ControllerBase
+    {
+        private readonly ExpenseService _expenseService;
 
-    public ExpensesController(IExpenseService expensesService) => 
-        _expensesService = expensesService;
-    
-    // POST /expenses
-    [HttpPost]
-    public Expense Post(Expense expense) => 
-        _expensesService.RegisterExpense(expense);
-    
-    // GET /expenses
-    [HttpGet]
-    public IEnumerable<Expense> Get() => 
-        _expensesService.RetrieveAll();
+        public ExpensesController(ExpenseService expenseService)
+        {
+            _expenseService = expenseService;
+        }
 
-    // DELETE /expenses/:id
-    [HttpDelete("{id}")]
-    public bool Delete(int id) => 
-        _expensesService.Delete(id);
+        [HttpPost]
+        public ActionResult<Expense> AddExpense([FromBody] Expense expense)
+        {
+            var registeredExpense = _expenseService.RegisterExpense(expense);
+            return Ok(registeredExpense);
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<Expense>> GetExpenses()
+        {
+            var expenses = _expenseService.RetrieveAll();
+            return Ok(expenses);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteExpense(int id)
+        {
+            var success = _expenseService.Delete(id);
+            if (success)
+            {
+                return Ok();
+            }
+            return NotFound();
+        }
+    }
 }
