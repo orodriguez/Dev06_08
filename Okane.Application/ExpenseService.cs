@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Okane.Domain;
 
 namespace Okane.Application;
@@ -15,7 +16,8 @@ public class ExpenseService : IExpenseService
         {
             Amount = request.Amount,
             Description = request.Description,
-            Category = request.Category
+            Category = request.Category,
+            Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") // added date time
         };
         
         _expensesRepository.Add(expense);
@@ -52,6 +54,7 @@ public class ExpenseService : IExpenseService
             Id = expense.Id,
             Category = expense.Category,
             Description = expense.Description,
-            Amount = expense.Amount
+            Amount = expense.Amount, 
+            Timestamp = expense.Timestamp.ToString()
         };
 }
