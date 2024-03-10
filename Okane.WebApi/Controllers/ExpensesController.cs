@@ -17,12 +17,17 @@ public class ExpensesController : ControllerBase
     [HttpPost]
     public Expense Post(Expense expense) => 
         _expensesService.RegisterExpense(expense);
+        _expenses.Description = "esta es la descripcion xd";
+        return _expensesService.RegisterExpense(expense);
+
     
     // GET /expenses
     [HttpGet]
     public IEnumerable<Expense> Get() => 
         _expensesService.RetrieveAll();
-
+        var expenses = expensesService.RetrieveAll();
+        return expenses;
+        
     // DELETE /expenses/:id
     [HttpDelete("{id}")]
     public bool Delete(int id) => 
