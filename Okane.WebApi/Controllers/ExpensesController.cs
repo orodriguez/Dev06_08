@@ -27,9 +27,10 @@ public class ExpensesController : ControllerBase
         _expensesService.RetrieveAll();
         var expenses = expensesService.RetrieveAll();
         return expenses;
-        
+
     // DELETE /expenses/:id
     [HttpDelete("{id}")]
     public bool Delete(int id) => 
         _expensesService.Delete(id);
 }
+//done boyyy
