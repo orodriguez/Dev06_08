@@ -40,7 +40,7 @@ public class ExpensesController : ControllerBase
         var response = _expensesService.ById(id);
         if (response == null)
             return NotFound();
-        Console.WriteLine(response);
+        
         return Ok(response);
     }
 
@@ -48,4 +48,27 @@ public class ExpensesController : ControllerBase
     [HttpDelete("{id}")]
     public bool Delete(int id) => 
         _expensesService.Delete(id);
+
+
+    //PUT /expenses/:id
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ExpenseResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<ExpenseResponse> Put(int id, CreateExpenseRequest expenseRequest)
+    {
+        var response = _expensesService.ById(id);
+        if (response == null)
+        {
+            return NotFound();
+        
+        }
+
+        return Ok(_expensesService.updateExpense(id, expenseRequest));
+            
+    
+    }
+
+
+
+
 }
