@@ -17,7 +17,13 @@ public class InMemoryExpensesRepository : IExpensesRepository
 
     public void Add(Expense expense)
     {
+        DateTime now = DateTime.Now;
+        
         expense.Id = _nextId++;
+        Console.WriteLine($"Date That will be saved: {now.ToString("yyyy-MM-dd HH:mm:ss")}");
+        
+        expense.CreatedAt = now.ToString("yyyy-MM-dd HH:mm:ss");
+        Console.WriteLine($"Actual Date that was saved: {expense.CreatedAt}");
         _expenses.Add(expense);
     }
 

@@ -40,7 +40,7 @@ public class ExpensesController : ControllerBase
         var response = _expensesService.ById(id);
         if (response == null)
             return NotFound();
-        
+        Console.WriteLine(response);
         return Ok(response);
     }
 
