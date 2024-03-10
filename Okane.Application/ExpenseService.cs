@@ -11,11 +11,15 @@ public class ExpenseService : IExpenseService
 
     public ExpenseResponse RegisterExpense(CreateExpenseRequest request)
     {
+       
         var expense = new Expense
         {
+
+
             Amount = request.Amount,
             Description = request.Description,
-            Category = request.Category
+            Category = request.Category,
+            
         };
         
         _expensesRepository.Add(expense);
@@ -52,6 +56,29 @@ public class ExpenseService : IExpenseService
             Id = expense.Id,
             Category = expense.Category,
             Description = expense.Description,
-            Amount = expense.Amount
+            Amount = expense.Amount,
+            CreatedAt = expense.CreatedAt
         };
+
+
+    public ExpenseResponse updateExpense(int id, CreateExpenseRequest expenseRequest)
+    {
+
+        var tempExpense = this._expensesRepository.ById(id);
+
+            tempExpense.Amount = expenseRequest.Amount;
+            tempExpense.Category =expenseRequest.Category;
+            tempExpense.Description = expenseRequest.Description;
+
+        return new ExpenseResponse() 
+        {
+            Id = tempExpense.Id,
+            Category = tempExpense.Category,
+            Description = tempExpense.Description,
+            Amount = tempExpense.Amount,
+            CreatedAt = tempExpense.CreatedAt
+
+        };
+    
+    }
 }
