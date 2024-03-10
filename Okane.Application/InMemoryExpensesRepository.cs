@@ -37,4 +37,12 @@ public class InMemoryExpensesRepository : IExpensesRepository
         _expenses.FirstOrDefault(expense => expense.Id == id);
 
     public int Count() => _expenses.Count;
+
+    public void Update(Expense expense)
+    {
+        var currentExpense = _expenses.FirstOrDefault(e => e.Id == expense.Id);
+        currentExpense!.Amount = expense.Amount;
+        currentExpense!.Category = expense.Category;
+        currentExpense!.Description = expense.Description;
+    }
 }

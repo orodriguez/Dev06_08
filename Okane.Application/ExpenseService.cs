@@ -56,4 +56,22 @@ public class ExpenseService : IExpenseService
             Amount = expense.Amount,
             CreateDate = expense.CreateDate
         };
+
+    public ExpenseResponse? UpdateExpense(int id, CreateExpenseRequest request)
+    {
+        var expense = _expensesRepository.ById(id);
+
+        if (expense == null)
+        {
+            return null;
+        }
+        expense.Amount = request.Amount;
+        expense.Category = request.Category;
+        expense.Description = request.Description;
+
+        _expensesRepository.Update(expense);
+
+        return CreateExpenseResponse(expense);
+
+    }
 }

@@ -55,18 +55,7 @@ public class ExpensesController : ControllerBase
     public ActionResult<ExpenseResponse> Put(int id, CreateExpenseRequest request)
     {
 
-        var expense = _expensesService.ById(id);
-        if(expense == null)
-            return NotFound();
-
-        if (!ModelState.IsValid)
-            return BadRequest(ModelState);
-
-        expense.Amount = request.Amount;
-        expense.Description = request.Description;
-        expense.Category = request.Category;
-        
-        return Ok(_expensesService.RegisterExpense(request));
+        return Ok(_expensesService.UpdateExpense(id, request));
     }
 
     
