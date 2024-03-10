@@ -10,6 +10,22 @@ public class ExpenseService : IExpenseService
     public ExpenseService(IExpensesRepository expensesRepository) => 
         _expensesRepository = expensesRepository;
 
+    public ExpenseResponse UpdateExpense(UpdateExpenseRequest request)
+    {
+        var expense = new Expense {
+            Id = request.Id,
+            Amount = request.Amount, 
+            Category = request.Category,
+            Description = request.Category,
+            Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") // added date time
+        };
+        
+        if(_expensesRepository.Update(expense))
+            return CreateExpenseResponse(expense);
+        
+        return CreateExpenseResponse(expense: null);
+    }
+
     public ExpenseResponse RegisterExpense(CreateExpenseRequest request)
     {
         var expense = new Expense
@@ -48,13 +64,15 @@ public class ExpenseService : IExpenseService
         return true;
     }
 
-    private static ExpenseResponse CreateExpenseResponse(Expense expense) =>
-        new()
+    private static ExpenseResponse CreateExpenseResponse(Expense? expense)
+    {
+        return new()
         {
             Id = expense.Id,
             Category = expense.Category,
             Description = expense.Description,
-            Amount = expense.Amount, 
+            Amount = expense.Amount,
             Timestamp = expense.Timestamp.ToString()
         };
+    }
 }
