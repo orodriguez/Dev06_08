@@ -15,7 +15,8 @@ public class ExpenseService : IExpenseService
         {
             Amount = request.Amount,
             Description = request.Description,
-            Category = request.Category
+            Category = request.Category,
+            CreateDate = DateTime.Now
         };
         
         _expensesRepository.Add(expense);
@@ -52,6 +53,7 @@ public class ExpenseService : IExpenseService
             Id = expense.Id,
             Category = expense.Category,
             Description = expense.Description,
-            Amount = expense.Amount
+            Amount = expense.Amount,
+            CreateDate = expense.CreateDate
         };
 }
