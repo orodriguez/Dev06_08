@@ -48,4 +48,15 @@ public class ExpensesController : ControllerBase
     [HttpDelete("{id}")]
     public bool Delete(int id) => 
         _expensesService.Delete(id);
+
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ExpenseResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
+    public ActionResult<ExpenseResponse> Put(int id, CreateExpenseRequest request)
+    {
+
+        return Ok(_expensesService.UpdateExpense(id, request));
+    }
+
+    
 }
