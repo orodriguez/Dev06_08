@@ -8,4 +8,5 @@ public interface IExpensesRepository
     IEnumerable<Expense> Search(string? categoryName = null);
     void Delete(int id);
     Expense? ById(int id);
+    void Update(Expense existingExpense);
 }

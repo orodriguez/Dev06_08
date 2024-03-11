@@ -1,25 +1,33 @@
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
-namespace Okane.Application;
-
-public class DataAnnotationsValidator<T>
+namespace Okane.Application
 {
-    public IDictionary<string, string[]> Validate(T obj)
+    public class DataAnnotationsValidator<T>
     {
-        var results = new List<ValidationResult>();
+        public IDictionary<string, string[]> Validate(T obj)
+        {
+            if (obj == null)
+            {
+                throw new ArgumentNullException(nameof(obj));
+            }
 
-        var context = new ValidationContext(
-            obj, serviceProvider: null, items: null);
+            var results = new List<ValidationResult>();
+            var context = new ValidationContext(
+                obj, serviceProvider: null, items: null);
 
-        Validator.TryValidateObject(obj, context, results, validateAllProperties: true);
+            Validator.TryValidateObject(obj, context, results, validateAllProperties: true);
 
-        return results
-            .GroupBy(result => string.Join('+', result.MemberNames))
-            .ToDictionary(
-                grouping => grouping.Key, 
-                ToArray);
+            return results
+                .GroupBy(result => string.Join('+', result.MemberNames))
+                .ToDictionary(
+                    grouping => grouping.Key, 
+                    ToArray);
+        }
+
+        private static string[] ToArray(IGrouping<string, ValidationResult> grouping) => 
+            grouping.Select(result => result.ErrorMessage ?? string.Empty).ToArray();
     }
-    
-    private static string[] ToArray(IGrouping<string, ValidationResult> grouping) => 
-        grouping.Select(result => result.ErrorMessage ?? string.Empty).ToArray();
 }
