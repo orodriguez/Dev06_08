@@ -20,6 +20,7 @@ public class ExpenseService : IExpenseService
             Amount = request.Amount,
             Description = request.Description,
             Category = request.Category,
+            InvoiceUrl = request.InvoiceUrl,
             CreatedAt = _getCurrentTime()
         };
         
@@ -64,6 +65,7 @@ public class ExpenseService : IExpenseService
             Category = expense.Category,
             Description = expense.Description,
             Amount = expense.Amount,
+            InvoiceUrl = expense.InvoiceUrl,
             CreatedAt = expense.CreatedAt
         };
 }

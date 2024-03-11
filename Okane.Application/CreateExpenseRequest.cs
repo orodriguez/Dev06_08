@@ -14,4 +14,6 @@ public class CreateExpenseRequest
     
     [MaxLength(250, ErrorMessage = "Description is too long")]
     public string? Description { get; set; }
+
+    public string? InvoiceUrl { get; set; }
 }

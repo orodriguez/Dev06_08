@@ -25,13 +25,15 @@ public class ExpensesServiceTests
         {
             Category = "Groceries",
             Amount = 10,
-            Description = "Description"
+            Description = "Description",
+            InvoiceUrl = "http://invoices.com/1"
         });
         
         Assert.Equal(1, response.Id);
         Assert.Equal(10, response.Amount);
         Assert.Equal("Groceries", response.Category);
         Assert.Equal("Description", response.Description);
+        Assert.Equal("http://invoices.com/1", response.InvoiceUrl);
         Assert.Equal(DateTime.Parse("2024-01-01"), response.CreatedAt);
     }
     
