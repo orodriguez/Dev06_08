@@ -13,7 +13,7 @@ public class ExpenseService : IExpenseService
         _getCurrentTime = getCurrentTime;
     }
 
-    public ExpenseResponse RegisterExpense(CreateExpenseRequest request)
+    public ExpenseResponse Register(CreateExpenseRequest request)
     {
         var expense = new Expense
         {
@@ -25,6 +25,12 @@ public class ExpenseService : IExpenseService
         
         _expensesRepository.Add(expense);
         
+        return CreateExpenseResponse(expense);
+    }
+
+    public ExpenseResponse Update(int id, UpdateExpenseRequest request)
+    {
+        var expense = _expensesRepository.Update(id, request);
         return CreateExpenseResponse(expense);
     }
 

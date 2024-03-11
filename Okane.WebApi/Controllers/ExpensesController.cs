@@ -23,7 +23,16 @@ public class ExpensesController : ControllerBase
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         
-        return Ok(_expensesService.RegisterExpense(request));
+        return Ok(_expensesService.Register(request));
+    }
+    
+    // PUT /expenses
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ExpenseResponse))]
+    public ActionResult<ExpenseResponse> Post(int id, UpdateExpenseRequest request)
+    {
+        var response = _expensesService.Update(id, request);
+        return Ok(response);
     }
 
     // GET /expenses

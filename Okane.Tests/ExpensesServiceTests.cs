@@ -21,7 +21,7 @@ public class ExpensesServiceTests
     {
         _now = DateTime.Parse("2024-01-01");
         
-        var response = _expenseService.RegisterExpense(new CreateExpenseRequest
+        var response = _expenseService.Register(new CreateExpenseRequest
         {
             Category = "Groceries",
             Amount = 10,
@@ -36,9 +36,33 @@ public class ExpensesServiceTests
     }
     
     [Fact]
+    public void UpdateExpense()
+    {
+        var createResponse = _expenseService.Register(new CreateExpenseRequest
+        {
+            Category = "Groceries",
+            Amount = 10,
+            Description = "Description"
+        });
+        
+        var updateResponse = _expenseService.Update(createResponse.Id, new UpdateExpenseRequest
+        {
+            Category = "Food",
+            Amount = 15,
+            Description = "New Description"
+        });
+        
+        Assert.Equal(1, updateResponse.Id);
+        Assert.Equal(15, updateResponse.Amount);
+        Assert.Equal("Food", updateResponse.Category);
+        Assert.Equal("New Description", updateResponse.Description);
+        Assert.Equal(createResponse.CreatedAt, updateResponse.CreatedAt);
+    }
+    
+    [Fact]
     public void ById()
     {
-        var registerExpenseResponse = _expenseService.RegisterExpense(new CreateExpenseRequest
+        var registerExpenseResponse = _expenseService.Register(new CreateExpenseRequest
         {
             Category = "Groceries",
             Amount = 10,
@@ -63,14 +87,14 @@ public class ExpensesServiceTests
     [Fact]
     public void SearchExpenses()
     {
-        _expenseService.RegisterExpense(new CreateExpenseRequest
+        _expenseService.Register(new CreateExpenseRequest
         {
             Category = "Groceries",
             Amount = 10,
             Description = "My Description"
         });
         
-        _expenseService.RegisterExpense(new CreateExpenseRequest
+        _expenseService.Register(new CreateExpenseRequest
         {
             Category = "Entertainment",
             Amount = 20
@@ -91,14 +115,14 @@ public class ExpensesServiceTests
     [Fact]
     public void SearchExpensesByCategory()
     {
-        _expenseService.RegisterExpense(new CreateExpenseRequest
+        _expenseService.Register(new CreateExpenseRequest
         {
             Category = "Groceries",
             Amount = 10,
             Description = "My Description"
         });
         
-        _expenseService.RegisterExpense(new CreateExpenseRequest
+        _expenseService.Register(new CreateExpenseRequest
         {
             Category = "Entertainment",
             Amount = 20
@@ -118,13 +142,13 @@ public class ExpensesServiceTests
     [Fact]
     public void Delete()
     {
-        _expenseService.RegisterExpense(new CreateExpenseRequest
+        _expenseService.Register(new CreateExpenseRequest
         {
             Category = "Food",
             Amount = 15
         });
 
-        _expenseService.RegisterExpense(new CreateExpenseRequest
+        _expenseService.Register(new CreateExpenseRequest
         {
             Category = "Fun",
             Amount = 10
