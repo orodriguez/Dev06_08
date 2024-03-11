@@ -1,3 +1,4 @@
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Okane.Application;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IExpenseService, ExpenseService>();
+builder.Services.AddTransient<Func<DateTime>>(_ => () => DateTime.Now);
 builder.Services.AddSingleton<IExpensesRepository, InMemoryExpensesRepository>();
 
 var app = builder.Build();

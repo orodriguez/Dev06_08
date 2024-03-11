@@ -7,16 +7,20 @@ public class ExpensesServiceTests
 {
     private readonly ExpenseService _expenseService;
     private readonly InMemoryExpensesRepository _expensesRepository;
+    private DateTime _now;
 
     public ExpensesServiceTests()
     {
         _expensesRepository = new InMemoryExpensesRepository();
-        _expenseService = new ExpenseService(_expensesRepository);
+        _expenseService = new ExpenseService(_expensesRepository, getCurrentTime: () => _now);
+        _now = DateTime.Now;
     }
 
     [Fact]
     public void RegisterExpense()
     {
+        _now = DateTime.Parse("2024-01-01");
+        
         var response = _expenseService.RegisterExpense(new CreateExpenseRequest
         {
             Category = "Groceries",
@@ -28,6 +32,7 @@ public class ExpensesServiceTests
         Assert.Equal(10, response.Amount);
         Assert.Equal("Groceries", response.Category);
         Assert.Equal("Description", response.Description);
+        Assert.Equal(DateTime.Parse("2024-01-01"), response.CreatedAt);
     }
     
     [Fact]

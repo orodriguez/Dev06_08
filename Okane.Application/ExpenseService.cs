@@ -5,9 +5,13 @@ namespace Okane.Application;
 public class ExpenseService : IExpenseService
 {
     private readonly IExpensesRepository _expensesRepository;
+    private readonly Func<DateTime> _getCurrentTime;
 
-    public ExpenseService(IExpensesRepository expensesRepository) => 
+    public ExpenseService(IExpensesRepository expensesRepository, Func<DateTime> getCurrentTime)
+    {
         _expensesRepository = expensesRepository;
+        _getCurrentTime = getCurrentTime;
+    }
 
     public ExpenseResponse RegisterExpense(CreateExpenseRequest request)
     {
@@ -15,7 +19,8 @@ public class ExpenseService : IExpenseService
         {
             Amount = request.Amount,
             Description = request.Description,
-            Category = request.Category
+            Category = request.Category,
+            CreatedAt = _getCurrentTime()
         };
         
         _expensesRepository.Add(expense);
@@ -52,6 +57,7 @@ public class ExpenseService : IExpenseService
             Id = expense.Id,
             Category = expense.Category,
             Description = expense.Description,
-            Amount = expense.Amount
+            Amount = expense.Amount,
+            CreatedAt = expense.CreatedAt
         };
 }

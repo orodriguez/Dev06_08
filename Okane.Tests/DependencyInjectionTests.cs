@@ -8,7 +8,7 @@ public class DependencyInjectionTests
     [Fact]
     public void ManualInjection()
     {
-        var service = new ExpenseService(new InMemoryExpensesRepository());
+        var service = new ExpenseService(new InMemoryExpensesRepository(), () => DateTime.Now);
     }
 
     [Fact]
@@ -16,6 +16,7 @@ public class DependencyInjectionTests
     {
         var services = new ServiceCollection();
         services.AddTransient<IExpenseService, ExpenseService>();
+        services.AddTransient<Func<DateTime>>(_ => () => DateTime.Now);
         services.AddSingleton<IExpensesRepository, InMemoryExpensesRepository>();
 
         var provider = services.BuildServiceProvider();
@@ -30,7 +31,7 @@ public class DependencyInjectionTests
     {
         var services = new ServiceCollection();
         services.AddTransient<IExpenseService, ExpenseService>();
-        
+        services.AddTransient<Func<DateTime>>(_ => () => DateTime.Now);
 
         var provider = services.BuildServiceProvider();
 
@@ -46,6 +47,7 @@ public class DependencyInjectionTests
     {
         var services = new ServiceCollection();
         services.AddTransient<IExpenseService, ExpenseService>();
+        services.AddTransient<Func<DateTime>>(_ => () => DateTime.Now);
         services.AddTransient<IExpensesRepository, InMemoryExpensesRepository>();
         var provider = services.BuildServiceProvider();
 
