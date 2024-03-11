@@ -5,8 +5,19 @@ Live coding application for Alterna Dev06 Back-end Fundamentals
 
 Download and install [.net 7](https://dotnet.microsoft.com/en-us/download/dotnet/7.0)
 
+Install PGSQL and PGAdmin.
+
+## Install EntityFramework tools
+```bash
+dotnet tool update dotnet-ef --version 7.0.10 --global
+```
+
+Verify Instalation
 ```bash
 dotnet --version 
+```
+```bash
+dotnet ef
 ```
 
 ## Build
@@ -17,6 +28,11 @@ donet build
 ## Run Test
 ```bash
 dotnet test
+```
+
+## Run Migrations
+```bash
+dotnet ef database update
 ```
 
 ## Run Web App

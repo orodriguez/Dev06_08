@@ -1,5 +1,5 @@
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Okane.Application;
+using Okane.Storage.EntityFramework;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +11,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IExpenseService, ExpenseService>();
 builder.Services.AddTransient<Func<DateTime>>(_ => () => DateTime.Now);
-builder.Services.AddSingleton<IExpensesRepository, InMemoryExpensesRepository>();
+builder.Services.AddTransient<IExpensesRepository, ExpensesRepository>();
+builder.Services.AddDbContext<OkaneDbContext>();
+
+// builder.Services.AddSingleton<IExpensesRepository, InMemoryExpensesRepository>();
 
 var app = builder.Build();
 
