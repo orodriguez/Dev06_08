@@ -44,6 +44,14 @@ public class ExpensesController : ControllerBase
         return Ok(response);
     }
 
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ExpenseResponse))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public ActionResult<ExpenseResponse> Put(int id, UpdateExpenseRequest request)
+    {
+        return Ok(_expensesService.UpdateExpense(id, request));
+    }
+    
     // DELETE /expenses/:id
     [HttpDelete("{id}")]
     public bool Delete(int id) => 

@@ -1,8 +1,8 @@
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Okane.Application;
 
-public class CreateExpenseRequest
+public class UpdateExpenseRequest
 {
     [Required]
     [Range(1, 1_000_000, ErrorMessage = "Amount is out of range")]
@@ -14,5 +14,4 @@ public class CreateExpenseRequest
     
     [MaxLength(250, ErrorMessage = "Description is too long")]
     public string? Description { get; set; }
-    public DateTime CreatedAt { get; set; }
 }
