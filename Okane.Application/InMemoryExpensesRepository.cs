@@ -21,5 +21,17 @@ public class InMemoryExpensesRepository : IExpensesRepository
         _expenses.Add(expense);
     }
 
+    public Expense? Delete(int id){
+        for(int i = 0; i < _expenses.Count; i++){
+            if(_expenses[i].Id == id){
+                var elementRemoved = _expenses[i];
+                _expenses.RemoveAt(i);
+                _nextId--;
+                return elementRemoved;
+            }
+            
+        }
+        return null;
+    }
     public IEnumerable<Expense> All() => _expenses;
 }

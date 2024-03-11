@@ -17,4 +17,10 @@ public class ExpenseService : IExpenseService
 
     public IEnumerable<Expense> RetrieveAll() => 
         _expenses.All();
+
+    public Expense? DeleteOne(int id)=>
+         _expenses.Delete(id);
+        
+    
+        
 }
