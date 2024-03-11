@@ -1,4 +1,7 @@
 using Okane.Domain;
+using System; 
+using System.Web.Http;
+using System.Web.Mvc;
 
 namespace Okane.Application;
 
@@ -11,6 +14,7 @@ public class ExpenseService : IExpenseService
 
     public Expense RegisterExpense(Expense expense)
     {
+        expense.Date = DateTime.Now; 
         _expenses.Add(expense);
         return expense;
     }
@@ -21,6 +25,11 @@ public class ExpenseService : IExpenseService
     public void DeleteExpense(int id)
     {
         _expenses.Delete(id);
+    }
+
+    public void UpdateExpense(Expense expense) 
+    {
+        _expenses.Update(expense);
     }
 }
 
@@ -70,6 +79,22 @@ public class ExpensesController : ControllerBase
             return NotFound();
 
         _expenseService.DeleteExpense(id);
+
+        return NoContent();
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult Put(int id, [FromBody] ExpenseDto expenseDto)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        var expense = _expenseService.RetrieveById(id);
+        if (expense == null)
+            return NotFound();
+
+        expense = expenseDto.ToExpense();
+        _expenseService.UpdateExpense(expense);
 
         return NoContent();
     }
