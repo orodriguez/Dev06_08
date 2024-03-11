@@ -9,7 +9,9 @@ public class CSharpBasicsTests
     {
         var expense = new Expense
         {
-            Category = "Food"
+            Category = "Food",
+            Timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+
         };
     }
 }

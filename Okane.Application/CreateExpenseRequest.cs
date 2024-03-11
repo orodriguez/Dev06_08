@@ -6,7 +6,7 @@ public class CreateExpenseRequest
 {
     [Required]
     [Range(1, 1_000_000, ErrorMessage = "Amount is out of range")]
-    public int Amount { get; set; }
+    public required int Amount { get; set; }
     
     [Required]
     [MaxLength(80, ErrorMessage = "Category is too long")]

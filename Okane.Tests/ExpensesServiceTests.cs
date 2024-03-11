@@ -28,6 +28,7 @@ public class ExpensesServiceTests
         Assert.Equal(10, response.Amount);
         Assert.Equal("Groceries", response.Category);
         Assert.Equal("Description", response.Description);
+        Assert.NotNull(response.Timestamp);
     }
     
     [Fact]
@@ -46,6 +47,7 @@ public class ExpensesServiceTests
         Assert.Equal(10, registerExpenseResponse.Amount);
         Assert.Equal("Groceries", registerExpenseResponse.Category);
         Assert.Equal("Description", registerExpenseResponse.Description);
+        Assert.NotNull(registerExpenseResponse.Timestamp);
     }
     
     [Fact]
@@ -81,6 +83,7 @@ public class ExpensesServiceTests
         Assert.Equal(10, firstExpense.Amount);
         Assert.Equal("Groceries", firstExpense.Category);
         Assert.Equal("My Description", firstExpense.Description);
+        Assert.NotNull(firstExpense.Timestamp);
     }
     
     [Fact]
@@ -108,6 +111,7 @@ public class ExpensesServiceTests
         Assert.Equal(10, firstExpense.Amount);
         Assert.Equal("Groceries", firstExpense.Category);
         Assert.Equal("My Description", firstExpense.Description);
+        Assert.NotNull(firstExpense.Timestamp);
     }
 
     [Fact]
