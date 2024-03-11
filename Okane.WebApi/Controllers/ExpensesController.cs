@@ -13,7 +13,18 @@ public class ExpensesController : ControllerBase
 
     public ExpensesController(IExpenseService expensesService) => 
         _expensesService = expensesService;
-    
+
+    // PUT /expenses
+    [HttpPut]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ExpenseResponse))]
+    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
+    public ActionResult<ExpenseResponse> Put(UpdateExpenseRequest request)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+        
+        return Ok(_expensesService.UpdateExpense(request));
+    } 
     // POST /expenses
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ExpenseResponse))]

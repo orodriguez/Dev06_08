@@ -15,6 +15,21 @@ public class InMemoryExpensesRepository : IExpensesRepository
         _expenses = expenses;
 
 
+    public bool Update(Expense expense)
+    {
+        var expenseTarget = this.ById(expense.Id);
+        
+        if(expenseTarget == null)
+            return false;
+
+        expenseTarget.Amount = expense.Amount;
+        expenseTarget.Category = expense.Category;
+        expenseTarget.Description = expense.Description;
+
+        return true;
+    }
+
+
     public void Add(Expense expense)
     {
         expense.Id = _nextId++;
