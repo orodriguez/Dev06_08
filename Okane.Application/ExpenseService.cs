@@ -15,7 +15,8 @@ public class ExpenseService : IExpenseService
         {
             Amount = request.Amount,
             Description = request.Description,
-            Category = request.Category
+            Category = request.Category,
+            CreatedAt = DateTime.Now
         };
         
         _expensesRepository.Add(expense);
@@ -46,12 +47,28 @@ public class ExpenseService : IExpenseService
         return true;
     }
 
+    public ExpenseResponse UpdateExpense(int expenseId, UpdateExpenseRequest request)
+    {
+        var expense = new Expense
+        {
+            Amount = request.Amount,
+            Description = request.Description,
+            Category = request.Category,
+            CreatedAt = DateTime.Now
+        };
+        
+        _expensesRepository.Update(expenseId, expense);
+
+        return CreateExpenseResponse(expense);
+    }
+    
     private static ExpenseResponse CreateExpenseResponse(Expense expense) =>
         new()
         {
             Id = expense.Id,
             Category = expense.Category,
             Description = expense.Description,
-            Amount = expense.Amount
+            Amount = expense.Amount,
+            CreatedAt = expense.CreatedAt
         };
 }

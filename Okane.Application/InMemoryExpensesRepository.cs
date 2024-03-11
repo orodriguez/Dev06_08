@@ -33,6 +33,15 @@ public class InMemoryExpensesRepository : IExpensesRepository
         _expenses.Remove(expenseToDelete);
     }
 
+    public void Update(int id, Expense expense)
+    {
+        var expenseToUpdate = _expenses.First(expense => expense.Id == id);
+
+        expenseToUpdate.Category = expense.Category;
+        expenseToUpdate.Description = expense.Description;
+        expenseToUpdate.Amount = expense.Amount;
+    }
+    
     public Expense? ById(int id) => 
         _expenses.FirstOrDefault(expense => expense.Id == id);
 
