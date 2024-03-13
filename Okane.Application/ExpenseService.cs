@@ -15,13 +15,16 @@ public class ExpenseService : IExpenseService
 
     public ExpenseResponse Register(CreateExpenseRequest request)
     {
+        var currentTime = _getCurrentTime();
+        
         var expense = new Expense
         {
             Amount = request.Amount,
             Description = request.Description,
             Category = request.Category,
             InvoiceUrl = request.InvoiceUrl,
-            CreatedAt = _getCurrentTime()
+            CreatedAt = currentTime,
+            UpdatedAt = currentTime 
         };
         
         _expensesRepository.Add(expense);
@@ -66,6 +69,7 @@ public class ExpenseService : IExpenseService
             Description = expense.Description,
             Amount = expense.Amount,
             InvoiceUrl = expense.InvoiceUrl,
-            CreatedAt = expense.CreatedAt
+            CreatedAt = expense.CreatedAt,
+            UpdatedAt = expense.UpdatedAt
         };
 }

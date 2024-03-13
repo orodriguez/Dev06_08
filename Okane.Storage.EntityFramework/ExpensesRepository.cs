@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Okane.Application;
 using Okane.Domain;
 
@@ -6,10 +7,12 @@ namespace Okane.Storage.EntityFramework;
 public class ExpensesRepository : IExpensesRepository
 {
     private readonly OkaneDbContext _db;
+    private readonly Func<DateTime> _getCurrentTime;
 
-    public ExpensesRepository(OkaneDbContext db)
+    public ExpensesRepository(OkaneDbContext db, Func<DateTime> getCurrentTime)
     {
         _db = db;
+        _getCurrentTime = getCurrentTime;
     }
 
     public void Add(Expense expense)
@@ -45,6 +48,7 @@ public class ExpensesRepository : IExpensesRepository
         expense.Category = request.Category;
         expense.Amount = request.Amount;
         expense.Description = request.Description;
+        expense.UpdatedAt = _getCurrentTime();
 
         _db.SaveChanges();
         return expense;

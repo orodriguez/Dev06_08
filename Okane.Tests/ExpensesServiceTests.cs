@@ -11,8 +11,9 @@ public class ExpensesServiceTests
 
     public ExpensesServiceTests()
     {
-        _expensesRepository = new InMemoryExpensesRepository();
-        _expenseService = new ExpenseService(_expensesRepository, getCurrentTime: () => _now);
+        DateTime CurrentTime() => _now;
+        _expensesRepository = new InMemoryExpensesRepository(CurrentTime);
+        _expenseService = new ExpenseService(_expensesRepository, getCurrentTime: CurrentTime);
         _now = DateTime.Now;
     }
 
@@ -35,17 +36,22 @@ public class ExpensesServiceTests
         Assert.Equal("Description", response.Description);
         Assert.Equal("http://invoices.com/1", response.InvoiceUrl);
         Assert.Equal(DateTime.Parse("2024-01-01"), response.CreatedAt);
+        Assert.Equal(DateTime.Parse("2024-01-01"), response.UpdatedAt);
     }
     
     [Fact]
     public void UpdateExpense()
     {
+        _now = DateTime.Parse("2024-02-02");
+        
         var createResponse = _expenseService.Register(new CreateExpenseRequest
         {
             Category = "Groceries",
             Amount = 10,
             Description = "Description"
         });
+        
+        _now = DateTime.Parse("2024-02-03");
         
         var updateResponse = _expenseService.Update(createResponse.Id, new UpdateExpenseRequest
         {
@@ -59,6 +65,7 @@ public class ExpensesServiceTests
         Assert.Equal("Food", updateResponse.Category);
         Assert.Equal("New Description", updateResponse.Description);
         Assert.Equal(createResponse.CreatedAt, updateResponse.CreatedAt);
+        Assert.Equal(DateTime.Parse("2024-02-03"), updateResponse.UpdatedAt);
     }
     
     [Fact]

@@ -8,7 +8,8 @@ public class DependencyInjectionTests
     [Fact]
     public void ManualInjection()
     {
-        var service = new ExpenseService(new InMemoryExpensesRepository(), () => DateTime.Now);
+        DateTime GetCurrentTime() => DateTime.Now;
+        var service = new ExpenseService(new InMemoryExpensesRepository(GetCurrentTime), GetCurrentTime);
     }
 
     [Fact]
@@ -63,6 +64,7 @@ public class DependencyInjectionTests
     {
         var services = new ServiceCollection();
         services.AddSingleton<IExpensesRepository, InMemoryExpensesRepository>();
+        services.AddTransient<Func<DateTime>>(_ => () => DateTime.Now);
         var provider = services.BuildServiceProvider();
 
         var repository1 = provider.GetRequiredService<IExpensesRepository>();
