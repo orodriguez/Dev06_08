@@ -38,13 +38,14 @@ public class ExpensesRepository : IExpensesRepository
     public Expense? ById(int id) => 
         _db.Expenses.FirstOrDefault(expense => expense.Id == id);
 
-    public Expense Update(int id, UpdateExpenseRequest request)
+    public Expense Update(int id, Expense request)
     {
         var expense = _db.Expenses.First(e => e.Id == id);
 
         expense.Category = request.Category;
         expense.Amount = request.Amount;
         expense.Description = request.Description;
+        expense.UpdatedAt = request.UpdatedAt;
 
         _db.SaveChanges();
         return expense;

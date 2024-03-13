@@ -36,7 +36,7 @@ public class InMemoryExpensesRepository : IExpensesRepository
     public Expense? ById(int id) => 
         _expenses.FirstOrDefault(expense => expense.Id == id);
 
-    public Expense Update(int id, UpdateExpenseRequest request)
+    public Expense Update(int id, Expense request)
     {
         // TODO: Add test for not found
         var expense = _expenses.First(e => e.Id == id);
@@ -44,6 +44,7 @@ public class InMemoryExpensesRepository : IExpensesRepository
         expense.Category = request.Category;
         expense.Amount = request.Amount;
         expense.Description = request.Description;
+        expense.UpdatedAt = request.UpdatedAt;
 
         return expense;
     }
