@@ -10,7 +10,7 @@ public class CreateExpenseRequest
     
     [Required]
     [MaxLength(80, ErrorMessage = "Category is too long")]
-    public required string Category { get; set; }
+    public required string CategoryName { get; set; }
     
     [MaxLength(250, ErrorMessage = "Description is too long")]
     public string? Description { get; set; }

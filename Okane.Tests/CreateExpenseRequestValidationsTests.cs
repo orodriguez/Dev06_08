@@ -17,7 +17,7 @@ public class CreateExpenseRequestValidationsTests
                 .Validate(new CreateExpenseRequest
                 {
                     Amount = 10,
-                    Category = "DefaultCategory",
+                    CategoryName = "DefaultCategory",
                     InvoiceUrl = "http://invoice.com/123"
                 });
         
@@ -31,7 +31,7 @@ public class CreateExpenseRequestValidationsTests
             .Validate(new CreateExpenseRequest
             {
                 Amount = 0,
-                Category = "DefaultCategory"
+                CategoryName = "DefaultCategory"
             });
         
         var (property, errors) = Assert.Single(validationResults);
@@ -47,12 +47,12 @@ public class CreateExpenseRequestValidationsTests
             .Validate(new CreateExpenseRequest
             {
                 Amount = 10,
-                Category = string.Join("", Enumerable.Repeat("a", 100))
+                CategoryName = string.Join("", Enumerable.Repeat("a", 100))
             });
         
         var (property, errors) = Assert.Single(validationResults);
         
-        Assert.Equal("Category", property);
+        Assert.Equal(nameof(CreateExpenseRequest.CategoryName), property);
         Assert.Equal("Category is too long", errors.First());
     }
     
@@ -63,7 +63,7 @@ public class CreateExpenseRequestValidationsTests
             .Validate(new CreateExpenseRequest
             {
                 Amount = 10,
-                Category = "DefaultCategory",
+                CategoryName = "DefaultCategory",
                 Description = string.Join("", Enumerable.Repeat("a", 500))
             });
         
@@ -80,7 +80,7 @@ public class CreateExpenseRequestValidationsTests
             .Validate(new CreateExpenseRequest
             {
                 Amount = 10,
-                Category = "DefaultCategory",
+                CategoryName = "DefaultCategory",
                 InvoiceUrl = "Invalid"
             });
         

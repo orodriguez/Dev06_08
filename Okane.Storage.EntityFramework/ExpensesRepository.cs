@@ -25,7 +25,7 @@ public class ExpensesRepository : IExpensesRepository
     {
         return categoryName != null
             ? _db.Expenses
-                .Where(expense => expense.Category == categoryName)
+                .Where(expense => expense.CategoryName == categoryName)
             : _db.Expenses;
     }
 
@@ -40,12 +40,12 @@ public class ExpensesRepository : IExpensesRepository
 
     public Expense? ById(int id) => 
         _db.Expenses.FirstOrDefault(expense => expense.Id == id);
-
-    public Expense Update(int id, UpdateExpenseRequest request)
+    
+    public Expense Update(int id,  UpdateExpenseRequest request, Category category)
     {
         var expense = _db.Expenses.First(e => e.Id == id);
 
-        expense.Category = request.Category;
+        expense.Category = category;
         expense.Amount = request.Amount;
         expense.Description = request.Description;
         expense.UpdatedAt = _getCurrentTime();

@@ -13,7 +13,17 @@ public class ExpensesServiceTests
     {
         DateTime CurrentTime() => _now;
         _expensesRepository = new InMemoryExpensesRepository(CurrentTime);
-        _expenseService = new ExpenseService(_expensesRepository, getCurrentTime: CurrentTime);
+        
+        var categoriesRepository = new InMemoryCategoriesRepository();
+        categoriesRepository.Add(new Category { Name = "Groceries" });
+        categoriesRepository.Add(new Category { Name = "Food" });
+        categoriesRepository.Add(new Category { Name = "Fun" });
+        categoriesRepository.Add(new Category { Name = "Entertainment" });
+        
+        _expenseService = new ExpenseService(
+            _expensesRepository, 
+            categoriesRepository, 
+            getCurrentTime: CurrentTime);
         _now = DateTime.Now;
     }
 
@@ -24,7 +34,7 @@ public class ExpensesServiceTests
         
         var response = _expenseService.Register(new CreateExpenseRequest
         {
-            Category = "Groceries",
+            CategoryName = "Groceries",
             Amount = 10,
             Description = "Description",
             InvoiceUrl = "http://invoices.com/1"
@@ -46,7 +56,7 @@ public class ExpensesServiceTests
         
         var createResponse = _expenseService.Register(new CreateExpenseRequest
         {
-            Category = "Groceries",
+            CategoryName = "Groceries",
             Amount = 10,
             Description = "Description"
         });
@@ -55,7 +65,7 @@ public class ExpensesServiceTests
         
         var updateResponse = _expenseService.Update(createResponse.Id, new UpdateExpenseRequest
         {
-            Category = "Food",
+            CategoryName = "Food",
             Amount = 15,
             Description = "New Description"
         });
@@ -73,7 +83,7 @@ public class ExpensesServiceTests
     {
         var registerExpenseResponse = _expenseService.Register(new CreateExpenseRequest
         {
-            Category = "Groceries",
+            CategoryName = "Groceries",
             Amount = 10,
             Description = "Description"
         });
@@ -98,14 +108,14 @@ public class ExpensesServiceTests
     {
         _expenseService.Register(new CreateExpenseRequest
         {
-            Category = "Groceries",
+            CategoryName = "Groceries",
             Amount = 10,
             Description = "My Description"
         });
         
         _expenseService.Register(new CreateExpenseRequest
         {
-            Category = "Entertainment",
+            CategoryName = "Entertainment",
             Amount = 20
         });
 
@@ -126,14 +136,14 @@ public class ExpensesServiceTests
     {
         _expenseService.Register(new CreateExpenseRequest
         {
-            Category = "Groceries",
+            CategoryName = "Groceries",
             Amount = 10,
             Description = "My Description"
         });
         
         _expenseService.Register(new CreateExpenseRequest
         {
-            Category = "Entertainment",
+            CategoryName = "Entertainment",
             Amount = 20
         });
 
@@ -153,13 +163,13 @@ public class ExpensesServiceTests
     {
         _expenseService.Register(new CreateExpenseRequest
         {
-            Category = "Food",
+            CategoryName = "Food",
             Amount = 15
         });
 
         _expenseService.Register(new CreateExpenseRequest
         {
-            Category = "Fun",
+            CategoryName = "Fun",
             Amount = 10
         });
 

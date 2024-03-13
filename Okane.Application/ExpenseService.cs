@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Okane.Domain;
 
 namespace Okane.Application;
@@ -6,22 +7,28 @@ public class ExpenseService : IExpenseService
 {
     private readonly IExpensesRepository _expensesRepository;
     private readonly Func<DateTime> _getCurrentTime;
+    private readonly ICategoriesRepository _categoriesRepository;
 
-    public ExpenseService(IExpensesRepository expensesRepository, Func<DateTime> getCurrentTime)
+    public ExpenseService(
+        IExpensesRepository expensesRepository, 
+        ICategoriesRepository categoriesRepository,
+        Func<DateTime> getCurrentTime)
     {
         _expensesRepository = expensesRepository;
+        _categoriesRepository = categoriesRepository;
         _getCurrentTime = getCurrentTime;
     }
 
     public ExpenseResponse Register(CreateExpenseRequest request)
     {
+        var category = _categoriesRepository.ByName(request.CategoryName);
         var currentTime = _getCurrentTime();
         
         var expense = new Expense
         {
             Amount = request.Amount,
             Description = request.Description,
-            Category = request.Category,
+            Category = category,
             InvoiceUrl = request.InvoiceUrl,
             CreatedAt = currentTime,
             UpdatedAt = currentTime 
@@ -34,8 +41,9 @@ public class ExpenseService : IExpenseService
 
     public ExpenseResponse Update(int id, UpdateExpenseRequest request)
     {
-        var expense = _expensesRepository.Update(id, request);
-        return CreateExpenseResponse(expense);
+        var category = _categoriesRepository.ByName(request.CategoryName);
+        var updatedExpense = _expensesRepository.Update(id, request, category);
+        return CreateExpenseResponse(updatedExpense);
     }
 
     public ExpenseResponse? ById(int id)
@@ -65,7 +73,7 @@ public class ExpenseService : IExpenseService
         new()
         {
             Id = expense.Id,
-            Category = expense.Category,
+            Category = expense.CategoryName,
             Description = expense.Description,
             Amount = expense.Amount,
             InvoiceUrl = expense.InvoiceUrl,

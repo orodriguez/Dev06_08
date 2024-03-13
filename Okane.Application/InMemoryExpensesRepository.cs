@@ -27,7 +27,7 @@ public class InMemoryExpensesRepository : IExpensesRepository
 
     public IEnumerable<Expense> Search(string? categoryName = null) => 
         categoryName != null 
-            ? _expenses.Where(expense => expense.Category == categoryName) 
+            ? _expenses.Where(expense => expense.CategoryName == categoryName) 
             : _expenses;
 
     public void Delete(int id)
@@ -40,12 +40,12 @@ public class InMemoryExpensesRepository : IExpensesRepository
     public Expense? ById(int id) => 
         _expenses.FirstOrDefault(expense => expense.Id == id);
 
-    public Expense Update(int id, UpdateExpenseRequest request)
+    public Expense Update(int id, UpdateExpenseRequest request, Category category)
     {
         // TODO: Add test for not found
         var expense = _expenses.First(e => e.Id == id);
 
-        expense.Category = request.Category;
+        expense.Category = category;
         expense.Amount = request.Amount;
         expense.Description = request.Description;
         expense.UpdatedAt = _getCurrentTime();
