@@ -53,10 +53,13 @@ public class ExpenseService : IExpenseService
         return expense == null ? null : CreateExpenseResponse(expense);
     }
 
-    public IEnumerable<ExpenseResponse> Search(string? category = null) => 
-        _expensesRepository
-            .Search(category)
+    public IEnumerable<ExpenseResponse> Search(string? category = null)
+    {
+        var expenses = _expensesRepository
+            .Search(category);
+        return expenses
             .Select(CreateExpenseResponse);
+    }
 
     public bool Delete(int id)
     {
@@ -73,7 +76,7 @@ public class ExpenseService : IExpenseService
         new()
         {
             Id = expense.Id,
-            Category = expense.CategoryName,
+            CategoryName = expense.CategoryName,
             Description = expense.Description,
             Amount = expense.Amount,
             InvoiceUrl = expense.InvoiceUrl,

@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using Okane.Application;
 using Okane.Domain;
 
@@ -23,10 +24,14 @@ public class ExpensesRepository : IExpensesRepository
 
     public IEnumerable<Expense> Search(string? categoryName = null)
     {
+        var expensesWithCategories = _db.Expenses
+            .Include(expense => expense.Category)
+            .ToArray();
+        
         return categoryName != null
-            ? _db.Expenses
+            ? expensesWithCategories
                 .Where(expense => expense.CategoryName == categoryName)
-            : _db.Expenses;
+            : expensesWithCategories;
     }
 
     public void Delete(int id)
@@ -39,7 +44,9 @@ public class ExpensesRepository : IExpensesRepository
     }
 
     public Expense? ById(int id) => 
-        _db.Expenses.FirstOrDefault(expense => expense.Id == id);
+        _db.Expenses
+            .Include(expense => expense.Category)
+            .FirstOrDefault(expense => expense.Id == id);
     
     public Expense Update(int id,  UpdateExpenseRequest request, Category category)
     {

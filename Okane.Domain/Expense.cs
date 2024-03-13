@@ -9,5 +9,7 @@ public class Expense
     public string? InvoiceUrl { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
+    
+    public int CategoryId { get; set; }
     public required Category Category { get; set; }
 }

@@ -29,7 +29,7 @@ public class ExpensesController : ControllerBase
     // PUT /expenses
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ExpenseResponse))]
-    public ActionResult<ExpenseResponse> Post(int id, UpdateExpenseRequest request)
+    public ActionResult<ExpenseResponse> Put(int id, UpdateExpenseRequest request)
     {
         var response = _expensesService.Update(id, request);
         return Ok(response);

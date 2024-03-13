@@ -42,7 +42,7 @@ public class ExpensesServiceTests
         
         Assert.Equal(1, response.Id);
         Assert.Equal(10, response.Amount);
-        Assert.Equal("Groceries", response.Category);
+        Assert.Equal("Groceries", response.CategoryName);
         Assert.Equal("Description", response.Description);
         Assert.Equal("http://invoices.com/1", response.InvoiceUrl);
         Assert.Equal(DateTime.Parse("2024-01-01"), response.CreatedAt);
@@ -72,7 +72,7 @@ public class ExpensesServiceTests
         
         Assert.Equal(1, updateResponse.Id);
         Assert.Equal(15, updateResponse.Amount);
-        Assert.Equal("Food", updateResponse.Category);
+        Assert.Equal("Food", updateResponse.CategoryName);
         Assert.Equal("New Description", updateResponse.Description);
         Assert.Equal(createResponse.CreatedAt, updateResponse.CreatedAt);
         Assert.Equal(DateTime.Parse("2024-02-03"), updateResponse.UpdatedAt);
@@ -92,7 +92,7 @@ public class ExpensesServiceTests
         
         Assert.Equal(1, registerExpenseResponse.Id);
         Assert.Equal(10, registerExpenseResponse.Amount);
-        Assert.Equal("Groceries", registerExpenseResponse.Category);
+        Assert.Equal("Groceries", registerExpenseResponse.CategoryName);
         Assert.Equal("Description", registerExpenseResponse.Description);
     }
     
@@ -127,7 +127,7 @@ public class ExpensesServiceTests
         var firstExpense = allExpenses.First();
         Assert.Equal(1, firstExpense.Id);
         Assert.Equal(10, firstExpense.Amount);
-        Assert.Equal("Groceries", firstExpense.Category);
+        Assert.Equal("Groceries", firstExpense.CategoryName);
         Assert.Equal("My Description", firstExpense.Description);
     }
     
@@ -154,7 +154,7 @@ public class ExpensesServiceTests
         var firstExpense = Assert.Single(expenses);
         Assert.Equal(1, firstExpense.Id);
         Assert.Equal(10, firstExpense.Amount);
-        Assert.Equal("Groceries", firstExpense.Category);
+        Assert.Equal("Groceries", firstExpense.CategoryName);
         Assert.Equal("My Description", firstExpense.Description);
     }
 

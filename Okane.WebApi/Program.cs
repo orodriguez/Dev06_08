@@ -12,6 +12,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IExpenseService, ExpenseService>();
 builder.Services.AddTransient<Func<DateTime>>(_ => () => DateTime.Now);
 builder.Services.AddTransient<IExpensesRepository, ExpensesRepository>();
+builder.Services.AddTransient<ICategoriesRepository, CategoriesRepository>();
 builder.Services.AddDbContext<OkaneDbContext>();
 
 // builder.Services.AddSingleton<IExpensesRepository, InMemoryExpensesRepository>();
