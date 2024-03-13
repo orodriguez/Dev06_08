@@ -62,6 +62,18 @@
 						"type": "text/javascript",
 						"packages": {}
 					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var categories = ['Food', 'Entertainment', 'Taxes'];",
+							"",
+							"pm.environment.set('Category', categories[Math.floor(Math.random() * categories.length)]);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
 				}
 			],
 			"request": {
@@ -69,7 +81,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"Amount\": 15,\n    \"Category\": \"Entertainment\",\n    \"Description\": \"Movie theater\",\n    \"InvoiceUrl\": \"http://invoices.com/2342\"\n}",
+					"raw": "{\n    \"Amount\": 15,\n    \"CategoryName\": \"{{Category}}\",\n    \"Description\": \"My Description\",\n    \"InvoiceUrl\": \"http://invoices.com/2342\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -102,7 +114,8 @@
 							"    pm.environment.set(\"createdExpenseId\", pm.response.json().id);",
 							"});"
 						],
-						"type": "text/javascript"
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -111,7 +124,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"Amount\": 100,\n    \"Category\": \"Food\",\n    \"Description\": \"My Description\"\n}",
+					"raw": "{\n    \"Amount\": 100,\n    \"CategoryName\": \"Food\",\n    \"Description\": \"My Description\",\n    \"InvoiceUrl\": \"http://invoice.com/123\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
