@@ -1,4 +1,5 @@
 using Okane.Application;
+using Okane.Domain;
 
 namespace Okane.Tests;
 
@@ -16,7 +17,8 @@ public class CreateExpenseRequestValidationsTests
                 .Validate(new CreateExpenseRequest
                 {
                     Amount = 10,
-                    Category = "DefaultCategory"
+                    Category = "DefaultCategory",
+                    InvoiceUrl = "http://invoice.com/123"
                 });
         
         Assert.Empty(validationResults);
@@ -69,5 +71,22 @@ public class CreateExpenseRequestValidationsTests
         
         Assert.Equal("Description", property);
         Assert.Equal("Description is too long", errors.First());
+    }
+    
+    [Fact]
+    public void InvalidUrl()
+    {
+        var validationResults = _validator
+            .Validate(new CreateExpenseRequest
+            {
+                Amount = 10,
+                Category = "DefaultCategory",
+                InvoiceUrl = "Invalid"
+            });
+        
+        var (property, errors) = Assert.Single(validationResults);
+        
+        Assert.Equal(nameof(Expense.InvoiceUrl), property);
+        Assert.Contains("The InvoiceUrl field is not a valid", errors.First());
     }
 }
