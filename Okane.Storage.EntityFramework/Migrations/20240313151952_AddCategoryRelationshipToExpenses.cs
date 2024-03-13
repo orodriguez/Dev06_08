@@ -11,9 +11,7 @@ namespace Okane.Storage.EntityFramework.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "Category",
-                table: "Expenses");
+            migrationBuilder.RenameColumn(name: "Category", table: "Expenses", newName: "CategoryName");
 
             migrationBuilder.AddColumn<int>(
                 name: "CategoryId",
@@ -35,7 +33,23 @@ namespace Okane.Storage.EntityFramework.Migrations
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
                 });
-
+            
+            migrationBuilder.Sql(@"
+                INSERT INTO public.""Categories"" (""Name"") 
+                SELECT DISTINCT ""CategoryName"" FROM ""Expenses""
+            ");
+            
+            migrationBuilder.Sql(@"
+                UPDATE ""Expenses"" AS e
+                SET ""CategoryId"" = c.""Id""
+                FROM ""Categories"" AS c
+                WHERE e.""CategoryName"" = c.""Name"";
+            ");
+            
+            migrationBuilder.DropColumn(
+                name: "CategoryName",
+                table: "Expenses");
+            
             migrationBuilder.CreateIndex(
                 name: "IX_Expenses_CategoryId",
                 table: "Expenses",
@@ -53,6 +67,20 @@ namespace Okane.Storage.EntityFramework.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<string>(
+                name: "Category",
+                table: "Expenses",
+                type: "text",
+                nullable: true,
+                defaultValue: "");
+            
+            migrationBuilder.Sql(@"
+                UPDATE ""Expenses"" AS e
+                SET ""Category"" = c.""Name""
+                FROM ""Categories"" AS c
+                WHERE e.""CategoryId"" = c.""Id"";
+            ");
+            
             migrationBuilder.DropForeignKey(
                 name: "FK_Expenses_Categories_CategoryId",
                 table: "Expenses");
@@ -67,13 +95,6 @@ namespace Okane.Storage.EntityFramework.Migrations
             migrationBuilder.DropColumn(
                 name: "CategoryId",
                 table: "Expenses");
-
-            migrationBuilder.AddColumn<string>(
-                name: "Category",
-                table: "Expenses",
-                type: "text",
-                nullable: false,
-                defaultValue: "");
         }
     }
 }
