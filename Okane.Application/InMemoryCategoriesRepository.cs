@@ -18,4 +18,19 @@ public class InMemoryCategoriesRepository : ICategoriesRepository
 
     public void Add(Category category) => 
         _categories.Add(category);
+
+    public Category Create(string categoryName)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Category? ById(int id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public IEnumerable<Category> Get()
+    {
+        throw new NotImplementedException();
+    }
 }

@@ -5,7 +5,7 @@ using Okane.Domain;
 
 namespace Okane.WebApi.Controllers;
 
-//[ApiController]
+[ApiController]
 [Route("[controller]")]
 public class CategoriesController : ControllerBase
 {
@@ -26,19 +26,10 @@ public class CategoriesController : ControllerBase
         return Ok(_categoryService.Register(request));
     }
     
-    // PUT /category
-    [HttpPut("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CategoryResponse))]
-    public ActionResult<CategoryResponse> Put(int id, CreateCategoryRequest request)
-    {
-        var response = _categoryService.Update(id, request);
-        return Ok(response);
-    }
-
     // GET /category
     [HttpGet]
-    public IEnumerable<CategoryResponse> Get(string? category) => 
-        _categoryService.Search(category);
+    public IEnumerable<CategoryResponse> Get() => 
+        _categoryService.Get();
 
     // GET /category/:id
     [HttpGet("{id}")]
@@ -53,8 +44,4 @@ public class CategoriesController : ControllerBase
         return Ok(response);
     }
 
-    // DELETE /category/:id
-    [HttpDelete("{id}")]
-    public bool Delete(int id) => 
-        _categoryService.Delete(id);
 }

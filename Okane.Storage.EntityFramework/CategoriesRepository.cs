@@ -23,6 +23,9 @@ public class CategoriesRepository : ICategoriesRepository
         return result;
     }
 
-    public Category ByName(string categoryName) => _db.Categories.First(category => category.Name == categoryName);
+    public Category? ByName(string categoryName) => _db.Categories.FirstOrDefault(category => category.Name == categoryName);
+    
+    public Category? ById(int id) => _db.Categories.FirstOrDefault(category => category.Id == id);
+    public IEnumerable<Category> Get() => _db.Categories.ToArray();
 
 }
