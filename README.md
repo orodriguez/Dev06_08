@@ -51,8 +51,16 @@ Contain business rules for the application.
 
 Contains coordination logic between entities and gateways.
 
-* Services
+#### Service Implementations
+
+Implement logic that works as an intermediary between the data-access/gateway layer
+and entities.
+
 * Repository Interfaces
+
+#### Repository Implementation 
+Implement logic to access, create, update and delete data. 
+Each method should be the equivalent of a database query.
 
 ### Okane.WebApi
 
