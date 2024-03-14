@@ -22,6 +22,8 @@ public class ExpenseService : IExpenseService
     public ExpenseResponse Register(CreateExpenseRequest request)
     {
         var category = _categoriesRepository.ByName(request.CategoryName);
+        if(category == null)
+            category = _categoriesRepository.Create(request.CategoryName);
         var currentTime = _getCurrentTime();
         
         var expense = new Expense
