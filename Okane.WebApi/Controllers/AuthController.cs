@@ -1,9 +1,10 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Okane.Application;
 
 namespace Okane.WebApi.Controllers;
 
-
+[AllowAnonymous]
 [ApiController]
 [Route("[controller]")]
 public class AuthController : ControllerBase
@@ -20,6 +21,6 @@ public class AuthController : ControllerBase
     
     // Get /token
     [HttpPost("token")]
-    public string Get(SignInRequest request) => 
-        _authService.GenerateToken(request);
+    public ActionResult Get(SignInRequest request) => 
+        Ok(new { Token = _authService.GenerateToken(request) });
 }

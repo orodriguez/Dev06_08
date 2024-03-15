@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Okane.Application;
 using Okane.Storage.EntityFramework;
 using Okane.WebApi;
@@ -10,6 +12,23 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = "https://okane.com",
+            ValidAudience = "public",
+            IssuerSigningKey = JwtTokenGenerator.SymmetricSecurityKey()
+        };
+    });
+
 builder.Services.AddTransient<IExpenseService, ExpenseService>();
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<Func<DateTime>>(_ => () => DateTime.Now);

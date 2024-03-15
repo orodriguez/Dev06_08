@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Okane.Application;
@@ -5,6 +6,7 @@ using Okane.Domain;
 
 namespace Okane.WebApi.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class ExpensesController : ControllerBase
