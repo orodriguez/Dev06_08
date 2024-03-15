@@ -25,13 +25,15 @@ public class ExpenseService : IExpenseService
             return BadReqeust(ModelState);
         
         }*/
+        var dateTime = _getCurrentTime();
         var expense = new Expense
         {
             Amount = request.Amount,
             Description = request.Description,
             Category = request.Category,
             InvoiceUrl = request.InvoiceUrl,
-            CreatedAt = _getCurrentTime()
+            CreatedAt = dateTime,
+            UpdatedAt = dateTime
         };
         
         _expensesRepository.Add(expense);
@@ -41,6 +43,7 @@ public class ExpenseService : IExpenseService
 
     public ExpenseResponse Update(int id, UpdateExpenseRequest request)
     {
+        
         var expense = _expensesRepository.Update(id, request);
         return CreateExpenseResponse(expense);
     }
@@ -76,7 +79,8 @@ public class ExpenseService : IExpenseService
             Description = expense.Description,
             Amount = expense.Amount,
             InvoiceUrl = expense.InvoiceUrl,
-            CreatedAt = expense.CreatedAt
+            CreatedAt = expense.CreatedAt,
+            UpdatedAt = expense.CreatedAt
         };
 
 

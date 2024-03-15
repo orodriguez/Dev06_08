@@ -6,6 +6,7 @@ namespace Okane.Storage.EntityFramework;
 public class ExpensesRepository : IExpensesRepository
 {
     private readonly OkaneDbContext _db;
+    private DateTime _getCurrentTime;
 
     public ExpensesRepository(OkaneDbContext db)
     {
@@ -41,10 +42,11 @@ public class ExpensesRepository : IExpensesRepository
     public Expense Update(int id, UpdateExpenseRequest request)
     {
         var expense = _db.Expenses.First(e => e.Id == id);
-
+        _getCurrentTime = DateTime.Now;
         expense.Category = request.Category;
         expense.Amount = request.Amount;
         expense.Description = request.Description;
+        expense.UpdatedAt = _getCurrentTime;
 
         _db.SaveChanges();
         return expense;
