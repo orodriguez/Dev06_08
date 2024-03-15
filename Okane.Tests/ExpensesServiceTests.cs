@@ -1,3 +1,4 @@
+using Moq;
 using Okane.Application;
 using Okane.Domain;
 
@@ -7,10 +8,18 @@ public class ExpensesServiceTests
 {
     private readonly ExpenseService _expenseService;
     private readonly InMemoryExpensesRepository _expensesRepository;
+    private readonly User _currentUser;
     private DateTime _now;
 
     public ExpensesServiceTests()
     {
+        _currentUser = new User
+        {
+            Id = 1,
+            Email = "user@mail.com",
+            HashedPassword = "FakeHashedPassword"
+        };
+        
         DateTime CurrentTime() => _now;
         _expensesRepository = new InMemoryExpensesRepository(CurrentTime);
         
@@ -19,11 +28,20 @@ public class ExpensesServiceTests
         categoriesRepository.Add(new Category { Name = "Food" });
         categoriesRepository.Add(new Category { Name = "Fun" });
         categoriesRepository.Add(new Category { Name = "Entertainment" });
+
+        IUsersRepository usersRepository = new InMemoryUsersRepository();
+        usersRepository.Add(_currentUser);
+
+        var mockUserSession = new Mock<IUserSession>();
+        mockUserSession
+            .Setup(session => session.GetCurrentUserId()).Returns(_currentUser.Id);
         
         _expenseService = new ExpenseService(
             _expensesRepository, 
             categoriesRepository, 
-            getCurrentTime: CurrentTime);
+            usersRepository,
+            getCurrentTime: CurrentTime,
+            mockUserSession.Object);
         _now = DateTime.Now;
     }
 
@@ -47,6 +65,7 @@ public class ExpensesServiceTests
         Assert.Equal("http://invoices.com/1", response.InvoiceUrl);
         Assert.Equal(DateTime.Parse("2024-01-01"), response.CreatedAt);
         Assert.Equal(DateTime.Parse("2024-01-01"), response.UpdatedAt);
+        Assert.Equal(_currentUser.Id, response.UserId);
     }
     
     [Fact]

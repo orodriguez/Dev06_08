@@ -17,4 +17,7 @@ public class UsersRepository : IUsersRepository
 
     public User? ByEmail(string email) => 
         _db.Users.FirstOrDefault(user => user.Email == email);
+
+    public User ById(int id) => 
+        _db.Users.First(user => user.Id == id);
 }

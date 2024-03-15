@@ -8,20 +8,28 @@ public class ExpenseService : IExpenseService
     private readonly IExpensesRepository _expensesRepository;
     private readonly Func<DateTime> _getCurrentTime;
     private readonly ICategoriesRepository _categoriesRepository;
+    private readonly IUsersRepository _usersRepository;
+    private readonly IUserSession _session;
 
-    public ExpenseService(
-        IExpensesRepository expensesRepository, 
+    public ExpenseService(IExpensesRepository expensesRepository,
         ICategoriesRepository categoriesRepository,
-        Func<DateTime> getCurrentTime)
+        IUsersRepository usersRepository,
+        Func<DateTime> getCurrentTime, 
+        IUserSession session)
     {
         _expensesRepository = expensesRepository;
         _categoriesRepository = categoriesRepository;
+        _usersRepository = usersRepository;
         _getCurrentTime = getCurrentTime;
+        _session = session;
     }
 
     public ExpenseResponse Register(CreateExpenseRequest request)
     {
         var category = _categoriesRepository.ByName(request.CategoryName);
+
+        var user = _usersRepository.ById(_session.GetCurrentUserId());
+        
         var currentTime = _getCurrentTime();
         
         var expense = new Expense
@@ -31,7 +39,8 @@ public class ExpenseService : IExpenseService
             Category = category,
             InvoiceUrl = request.InvoiceUrl,
             CreatedAt = currentTime,
-            UpdatedAt = currentTime 
+            UpdatedAt = currentTime,
+            User = user
         };
         
         _expensesRepository.Add(expense);
@@ -81,6 +90,7 @@ public class ExpenseService : IExpenseService
             Amount = expense.Amount,
             InvoiceUrl = expense.InvoiceUrl,
             CreatedAt = expense.CreatedAt,
-            UpdatedAt = expense.UpdatedAt
+            UpdatedAt = expense.UpdatedAt,
+            UserId = expense.User.Id
         };
 }
