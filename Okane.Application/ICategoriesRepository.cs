@@ -4,5 +4,8 @@ namespace Okane.Application;
 
 public interface ICategoriesRepository
 {
-    Category ByName(string categoryName);
+    Category Create(string categoryName);
+    Category? ByName(string categoryName);
+    Category? ById(int id);
+    IEnumerable<Category>? Get();
 }
