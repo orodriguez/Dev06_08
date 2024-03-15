@@ -1,4 +1,5 @@
 using Okane.Domain;
+using System.Text.RegularExpressions;
 
 namespace Okane.Application;
 
@@ -13,8 +14,17 @@ public class ExpenseService : IExpenseService
         _getCurrentTime = getCurrentTime;
     }
 
+    
     public ExpenseResponse Register(CreateExpenseRequest request)
     {
+
+        /*if (!isInvalidUrl(request.InvoiceUrl))
+        {
+            Console.WriteLine("Factura no valida.");
+            ModelState.AddModelError("InvoiceUrl", "La url que has enviado no es una valida, por favor, verifica.");
+            return BadReqeust(ModelState);
+        
+        }*/
         var expense = new Expense
         {
             Amount = request.Amount,
@@ -68,4 +78,8 @@ public class ExpenseService : IExpenseService
             InvoiceUrl = expense.InvoiceUrl,
             CreatedAt = expense.CreatedAt
         };
+
+
+
+  
 }

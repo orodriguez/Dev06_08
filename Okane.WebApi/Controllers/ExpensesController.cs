@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Okane.Application;
 using Okane.Domain;
+using System.Text.RegularExpressions;
 
 namespace Okane.WebApi.Controllers;
 
@@ -20,6 +21,17 @@ public class ExpensesController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(ModelStateDictionary))]
     public ActionResult<ExpenseResponse> Post(CreateExpenseRequest request)
     {
+        string urlPattern = @"^(https?://)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]*)*/?$";
+
+        string url = request.InvoiceUrl;
+        bool isValidUrl = Regex.IsMatch(url, urlPattern, RegexOptions.IgnoreCase);
+        if (!isValidUrl)
+        {
+            ModelState.AddModelError("InvoiceUrl", "La url que has enviado no es una valida, por favor, verifica.");
+            return BadRequest(ModelState);
+        }
+
+
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
         
