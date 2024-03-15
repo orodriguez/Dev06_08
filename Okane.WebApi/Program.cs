@@ -17,6 +17,7 @@ builder.Services.AddTransient<IExpensesRepository, ExpensesRepository>();
 builder.Services.AddTransient<ICategoriesRepository, CategoriesRepository>();
 builder.Services.AddTransient<IUsersRepository, UsersRepository>();
 builder.Services.AddTransient<IPasswordHasher, BCryptPasswordHasher>();
+builder.Services.AddTransient<ITokenGenerator, JwtTokenGenerator>();
 builder.Services.AddDbContext<OkaneDbContext>();
 
 // builder.Services.AddSingleton<IExpensesRepository, InMemoryExpensesRepository>();

@@ -13,8 +13,13 @@ public class AuthController : ControllerBase
     public AuthController(IAuthService authService) => 
         _authService = authService;
 
-    // POST /expenses
+    // POST /signup
     [HttpPost("signup")]
     public UserResponse Post(SignUpRequest request) => 
         _authService.SignUp(request);
+    
+    // Get /token
+    [HttpPost("token")]
+    public string Get(SignInRequest request) => 
+        _authService.GenerateToken(request);
 }
