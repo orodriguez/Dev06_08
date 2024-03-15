@@ -29,6 +29,7 @@ builder.Services
         };
     });
 
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<IExpenseService, ExpenseService>();
 builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<Func<DateTime>>(_ => () => DateTime.Now);
@@ -37,6 +38,7 @@ builder.Services.AddTransient<ICategoriesRepository, CategoriesRepository>();
 builder.Services.AddTransient<IUsersRepository, UsersRepository>();
 builder.Services.AddTransient<IPasswordHasher, BCryptPasswordHasher>();
 builder.Services.AddTransient<ITokenGenerator, JwtTokenGenerator>();
+builder.Services.AddTransient<IUserSession, HttpContextUserSession>();
 builder.Services.AddDbContext<OkaneDbContext>();
 
 // builder.Services.AddSingleton<IExpensesRepository, InMemoryExpensesRepository>();
