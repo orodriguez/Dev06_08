@@ -1,5 +1,6 @@
 using Okane.Application;
 using Okane.Storage.EntityFramework;
+using Okane.WebApi;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,9 +11,12 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IExpenseService, ExpenseService>();
+builder.Services.AddTransient<IAuthService, AuthService>();
 builder.Services.AddTransient<Func<DateTime>>(_ => () => DateTime.Now);
 builder.Services.AddTransient<IExpensesRepository, ExpensesRepository>();
 builder.Services.AddTransient<ICategoriesRepository, CategoriesRepository>();
+builder.Services.AddTransient<IUsersRepository, UsersRepository>();
+builder.Services.AddTransient<IPasswordHasher, BCryptPasswordHasher>();
 builder.Services.AddDbContext<OkaneDbContext>();
 
 // builder.Services.AddSingleton<IExpensesRepository, InMemoryExpensesRepository>();
