@@ -20,5 +20,8 @@ public class InMemoryUsersRepository : IUsersRepository
         _users.Add(user);
     }
 
+    public User? ByEmail(string email) => 
+        _users.FirstOrDefault(user => user.Email == email);
+
     public User ById(int id) => _users.First();
 }
