@@ -1,5 +1,7 @@
+using System.Data;
 using Okane.Application;
 using Okane.Domain;
+using Xunit.Sdk;
 
 namespace Okane.Tests;
 
@@ -59,6 +61,27 @@ public class ExpensesServiceTests
         Assert.Equal("Food", updateResponse.Category);
         Assert.Equal("New Description", updateResponse.Description);
         Assert.Equal(createResponse.CreatedAt, updateResponse.CreatedAt);
+        Assert.Equal(createResponse.UpdateAt, updateResponse.UpdateAt);
+    }
+        [Fact]
+    public void UpdateExpenseException()
+    {
+        var createResponse = _expenseService.Register(new CreateExpenseRequest
+        {
+            Category = "Groceries",
+            Amount = 10,
+            Description = "Description"
+        });
+        
+
+        
+        Assert.Throws<InvalidOperationException>(() => _expenseService.Update(2, new UpdateExpenseRequest
+        {
+            Category = "Food",
+            Amount = 15,
+            Description = "New Description"
+        }));
+
     }
     
     [Fact]

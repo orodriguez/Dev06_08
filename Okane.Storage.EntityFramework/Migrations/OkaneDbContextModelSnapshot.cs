@@ -46,6 +46,9 @@ namespace Okane.Storage.EntityFramework.Migrations
                     b.Property<string>("InvoiceUrl")
                         .HasColumnType("text");
 
+                    b.Property<DateTime?>("UpdateAt")
+                        .HasColumnType("timestamp without time zone");
+
                     b.HasKey("Id");
 
                     b.ToTable("Expenses");

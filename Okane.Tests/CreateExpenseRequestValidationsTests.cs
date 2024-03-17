@@ -74,4 +74,21 @@ public class CreateExpenseRequestValidationsTests
         Assert.Equal("Description", property);
         Assert.Equal("Description is too long", errors.First());
     }
+
+        [Fact]
+    public void InvalidUrl()
+    {
+        var validationResults = _validator
+            .Validate(new CreateExpenseRequest
+            {
+                Amount = 10,
+                Category = "DefaultCategory",
+                InvoiceUrl = "myBadUrl"
+            });
+
+        var (property, errors) = Assert.Single(validationResults);
+
+        Assert.Equal("InvoiceUrl", property);
+        Assert.Equal("Not a valid website URL", errors.First());
+    }
 }

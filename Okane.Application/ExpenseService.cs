@@ -21,7 +21,8 @@ public class ExpenseService : IExpenseService
             Description = request.Description,
             Category = request.Category,
             InvoiceUrl = request.InvoiceUrl,
-            CreatedAt = _getCurrentTime()
+            CreatedAt = _getCurrentTime(),
+            UpdateAt = _getCurrentTime()
         };
         
         _expensesRepository.Add(expense);
@@ -32,6 +33,7 @@ public class ExpenseService : IExpenseService
     public ExpenseResponse Update(int id, UpdateExpenseRequest request)
     {
         var expense = _expensesRepository.Update(id, request);
+        expense.UpdateAt = _getCurrentTime();
         return CreateExpenseResponse(expense);
     }
 
@@ -66,6 +68,7 @@ public class ExpenseService : IExpenseService
             Description = expense.Description,
             Amount = expense.Amount,
             InvoiceUrl = expense.InvoiceUrl,
-            CreatedAt = expense.CreatedAt
+            CreatedAt = expense.CreatedAt,
+            UpdateAt = expense.UpdateAt
         };
 }
