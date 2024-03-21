@@ -16,6 +16,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Okane.Application\Okane.Application.csproj" />
+      <ProjectReference Include="..\Okane.Domain\Okane.Domain.csproj" />
     </ItemGroup>
 
 </Project>

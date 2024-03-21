@@ -10,6 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<IExpenseService, ExpenseService>();
+builder.Services.AddTransient<ICategoryService, CategoryService>();
 builder.Services.AddTransient<Func<DateTime>>(_ => () => DateTime.Now);
 builder.Services.AddTransient<IExpensesRepository, ExpensesRepository>();
 builder.Services.AddDbContext<OkaneDbContext>();

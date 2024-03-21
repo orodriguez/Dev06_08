@@ -63,15 +63,17 @@ public class ExpensesRepository : IExpensesRepository
     public void addCategory(Category category)
     {
         _db.Categories.Add(category);
+        _db.SaveChanges();
     }
 
     public Category getCategoryById(int id)
     {
-        return _db.Categories.FirstOrDefault(c => c.Id == id);
+        return _db.Categories.FirstOrDefault(c => c.Id == id)!;
     }
 
     public Category GetCategoryByName(string categoryName)
     {
-        return _db.Categories.FirstOrDefault(c => c.Name == categoryName);
+        var category = _db.Categories.FirstOrDefault(c => c.Name == categoryName)!;
+        return category;
     }
 }
