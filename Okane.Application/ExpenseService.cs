@@ -15,12 +15,20 @@ public class ExpenseService : IExpenseService
 
     public ExpenseResponse Register(CreateExpenseRequest request)
     {
+        
+        var category = _expensesRepository.GetCategoryByName(request.Category);
+        if(category == null)
+            _expensesRepository.addCategory(new Category { Name = request.Category});
+
+
+
         var expense = new Expense
         {
             Amount = request.Amount,
             Description = request.Description,
-            Category = request.Category,
             InvoiceUrl = request.InvoiceUrl,
+            CategoryId = _expensesRepository.GetCategoryByName(request.Category).Id,
+            Category = _expensesRepository.GetCategoryByName(request.Category),
             CreatedAt = _getCurrentTime(),
             UpdateAt = _getCurrentTime()
         };
@@ -64,7 +72,8 @@ public class ExpenseService : IExpenseService
         new()
         {
             Id = expense.Id,
-            Category = expense.Category,
+            CategoryId = expense.CategoryId,
+            CateryName = expense.Category.Name,
             Description = expense.Description,
             Amount = expense.Amount,
             InvoiceUrl = expense.InvoiceUrl,

@@ -6,13 +6,17 @@ public class InMemoryExpensesRepository : IExpensesRepository
 {
     private int _nextId = 1;
     private readonly IList<Expense> _expenses;
+    private readonly IList<Category> _categories;
 
-    public InMemoryExpensesRepository() : this(new List<Expense>())
+    public InMemoryExpensesRepository() : this(new List<Expense>(), new List<Category>())
     {
     }
 
-    private InMemoryExpensesRepository(IList<Expense> expenses) => 
+    private InMemoryExpensesRepository(IList<Expense> expenses, IList<Category> categories) {
+
         _expenses = expenses;
+        _categories = categories;
+    }
 
 
     public void Add(Expense expense)
@@ -21,10 +25,12 @@ public class InMemoryExpensesRepository : IExpensesRepository
         _expenses.Add(expense);
     }
 
-    public IEnumerable<Expense> Search(string? categoryName = null) => 
-        categoryName != null 
-            ? _expenses.Where(expense => expense.Category == categoryName) 
-            : _expenses;
+    public IEnumerable<Expense> Search(string? categoryName = null) {
+        var category = _categories.FirstOrDefault(c => c.Name == categoryName);
+        var expenses = category == null ? _expenses : _expenses.Where( e => e.CategoryId == category?.Id);
+
+        return expenses;
+    }
 
     public void Delete(int id)
     {
@@ -38,10 +44,14 @@ public class InMemoryExpensesRepository : IExpensesRepository
 
     public Expense Update(int id, UpdateExpenseRequest request)
     {
-        // TODO: Add test for not found
+
         var expense = _expenses.First(e => e.Id == id);
 
-        expense.Category = request.Category;
+        Category category = new Category{
+            Name = request.Category
+        };
+
+        expense.Category = category;
         expense.Amount = request.Amount;
         expense.Description = request.Description;
 
@@ -49,4 +59,22 @@ public class InMemoryExpensesRepository : IExpensesRepository
     }
 
     public int Count() => _expenses.Count;
+
+    public void addCategory(Category category)
+    {
+       category.Id = _categories.Count + 1;
+       _categories.Add(category);
+    }
+
+    public Category getCategoryById(int id)
+    {
+        
+        return _categories.FirstOrDefault(c => c.Id == id)! ;
+    }
+
+    public Category GetCategoryByName(string categoryName)
+    {
+        var category = _categories.FirstOrDefault(c => c.Name == categoryName)!;
+        return category;
+    }
 }

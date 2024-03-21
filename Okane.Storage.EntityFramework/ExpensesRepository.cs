@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Okane.Application;
 using Okane.Domain;
 
@@ -20,12 +21,11 @@ public class ExpensesRepository : IExpensesRepository
 
     public IEnumerable<Expense> Search(string? categoryName = null)
     {
-        return categoryName != null
-            ? _db.Expenses
-                .Where(expense => expense.Category == categoryName)
-            : _db.Expenses;
-    }
+        var category = _db.Categories.FirstOrDefault(c => c.Name == categoryName);
+        return category!.Expenses.ToArray();
+        
 
+    }
     public void Delete(int id)
     {
         var expenseToDelete = _db.Expenses
@@ -45,7 +45,7 @@ public class ExpensesRepository : IExpensesRepository
         {
             var expense = _db.Expenses.First(e => e.Id == id);
 
-            expense.Category = request.Category;
+            expense.Category.Name = request.Category;
             expense.Amount = request.Amount;
             expense.Description = request.Description;
 
@@ -58,5 +58,20 @@ public class ExpensesRepository : IExpensesRepository
             throw new Exception(e.Message);
         }
 
+    }
+
+    public void addCategory(Category category)
+    {
+        _db.Categories.Add(category);
+    }
+
+    public Category getCategoryById(int id)
+    {
+        return _db.Categories.FirstOrDefault(c => c.Id == id);
+    }
+
+    public Category GetCategoryByName(string categoryName)
+    {
+        return _db.Categories.FirstOrDefault(c => c.Name == categoryName);
     }
 }

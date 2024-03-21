@@ -22,6 +22,11 @@ public class ExpensesServiceTests
     public void RegisterExpense()
     {
         _now = DateTime.Parse("2024-01-01");
+
+        var category = new Category {
+            Name = "myKind",
+            
+        };
         
         var response = _expenseService.Register(new CreateExpenseRequest
         {
@@ -33,7 +38,7 @@ public class ExpensesServiceTests
         
         Assert.Equal(1, response.Id);
         Assert.Equal(10, response.Amount);
-        Assert.Equal("Groceries", response.Category);
+        Assert.Equal("Groceries", response.CateryName);
         Assert.Equal("Description", response.Description);
         Assert.Equal("http://invoices.com/1", response.InvoiceUrl);
         Assert.Equal(DateTime.Parse("2024-01-01"), response.CreatedAt);
@@ -58,11 +63,12 @@ public class ExpensesServiceTests
         
         Assert.Equal(1, updateResponse.Id);
         Assert.Equal(15, updateResponse.Amount);
-        Assert.Equal("Food", updateResponse.Category);
+        Assert.Equal("Food", updateResponse.CateryName);
         Assert.Equal("New Description", updateResponse.Description);
         Assert.Equal(createResponse.CreatedAt, updateResponse.CreatedAt);
         Assert.Equal(createResponse.UpdateAt, updateResponse.UpdateAt);
     }
+            //  Add test for not found
         [Fact]
     public void UpdateExpenseException()
     {
@@ -98,7 +104,7 @@ public class ExpensesServiceTests
         
         Assert.Equal(1, registerExpenseResponse.Id);
         Assert.Equal(10, registerExpenseResponse.Amount);
-        Assert.Equal("Groceries", registerExpenseResponse.Category);
+        Assert.Equal("Groceries", registerExpenseResponse.CateryName);
         Assert.Equal("Description", registerExpenseResponse.Description);
     }
     
@@ -133,7 +139,7 @@ public class ExpensesServiceTests
         var firstExpense = allExpenses.First();
         Assert.Equal(1, firstExpense.Id);
         Assert.Equal(10, firstExpense.Amount);
-        Assert.Equal("Groceries", firstExpense.Category);
+        Assert.Equal("Groceries", firstExpense.CateryName);
         Assert.Equal("My Description", firstExpense.Description);
     }
     
@@ -160,7 +166,7 @@ public class ExpensesServiceTests
         var firstExpense = Assert.Single(expenses);
         Assert.Equal(1, firstExpense.Id);
         Assert.Equal(10, firstExpense.Amount);
-        Assert.Equal("Groceries", firstExpense.Category);
+        Assert.Equal("Groceries", firstExpense.CateryName);
         Assert.Equal("My Description", firstExpense.Description);
     }
 

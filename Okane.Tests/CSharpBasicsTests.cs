@@ -7,9 +7,9 @@ public class CSharpBasicsTests
     [Fact]
     public void RequiredProperties()
     {
-        var expense = new Expense
+        var category = new Category
         {
-            Category = "Food"
+            Name = "Food"
         };
     }
 }
