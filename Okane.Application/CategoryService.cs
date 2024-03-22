@@ -16,7 +16,7 @@ public class CategoryService : ICategoryService
     public IEnumerable<CategoryResponse> Get()
     {
         var categories = _categoriesRepository.Get();
-        return categories.Select(CreateCategoryResponse);
+        return categories!.Select(CreateCategoryResponse);
     }
 
     public CategoryResponse? ById(int id)
