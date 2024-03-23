@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Okane.Domain;
 
 namespace Okane.Application;
@@ -34,5 +35,4 @@ public class ExpenseService : IExpenseService
             return true;
 
 
-    }
 }
