@@ -1,4 +1,5 @@
 using Okane.Domain;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Okane.Application;
 
@@ -20,6 +21,24 @@ public class InMemoryExpensesRepository : IExpensesRepository
         expense.Id = _nextId++;
         _expenses.Add(expense);
     }
+    public void Delete(int id) { 
+        var expenseRemove = _expenses.FirstOrDefault(Expense => Expense.Id == id);
+
+        if (expenseRemove != null) { 
+        
+            _expenses.Remove(expenseRemove);    
+        }
+    }
+
+    public Expense byId(int id) {
+         return _expenses.FirstOrDefault(expense => expense.Id == id);
+    }
 
     public IEnumerable<Expense> All() => _expenses;
+
+    public int Count()
+    {
+        return _expenses.Count;
+    }
+
 }
