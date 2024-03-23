@@ -7,42 +7,11 @@ namespace Okane.Tests;
 public class ExpensesServiceTests
 {
     private readonly ExpenseService _expenseService;
-    private readonly InMemoryExpensesRepository _expensesRepository;
-    private readonly User _currentUser;
-    private DateTime _now;
-
+    private readonly IExpensesRepository _expensesRepository;
     public ExpensesServiceTests()
     {
-        _currentUser = new User
-        {
-            Id = 1,
-            Email = "user@mail.com",
-            HashedPassword = "FakeHashedPassword"
-        };
-        
-        DateTime CurrentTime() => _now;
-        _expensesRepository = new InMemoryExpensesRepository(CurrentTime);
-        
-        var categoriesRepository = new InMemoryCategoriesRepository();
-        categoriesRepository.Add(new Category { Name = "Groceries" });
-        categoriesRepository.Add(new Category { Name = "Food" });
-        categoriesRepository.Add(new Category { Name = "Fun" });
-        categoriesRepository.Add(new Category { Name = "Entertainment" });
-
-        IUsersRepository usersRepository = new InMemoryUsersRepository();
-        usersRepository.Add(_currentUser);
-
-        var mockUserSession = new Mock<IUserSession>();
-        mockUserSession
-            .Setup(session => session.GetCurrentUserId()).Returns(_currentUser.Id);
-        
-        _expenseService = new ExpenseService(
-            _expensesRepository, 
-            categoriesRepository, 
-            usersRepository,
-            getCurrentTime: CurrentTime,
-            mockUserSession.Object);
-        _now = DateTime.Now;
+        _expensesRepository = new InMemoryExpensesRepository();
+        _expenseService = new ExpenseService(_expensesRepository);
     }
 
     [Fact]
@@ -52,74 +21,17 @@ public class ExpensesServiceTests
         
         var response = _expenseService.Register(new CreateExpenseRequest
         {
-            CategoryName = "Groceries",
+            Category = "Groceries",
             Amount = 10,
-            Description = "Description",
-            InvoiceUrl = "http://invoices.com/1"
-        });
-        
-        Assert.Equal(1, response.Id);
-        Assert.Equal(10, response.Amount);
-        Assert.Equal("Groceries", response.CategoryName);
-        Assert.Equal("Description", response.Description);
-        Assert.Equal("http://invoices.com/1", response.InvoiceUrl);
-        Assert.Equal(DateTime.Parse("2024-01-01"), response.CreatedAt);
-        Assert.Equal(DateTime.Parse("2024-01-01"), response.UpdatedAt);
-        Assert.Equal(_currentUser.Id, response.UserId);
-    }
-    
-    [Fact]
-    public void UpdateExpense()
-    {
-        _now = DateTime.Parse("2024-02-02");
-        
-        var createResponse = _expenseService.Register(new CreateExpenseRequest
-        {
-            CategoryName = "Groceries",
-            Amount = 10,
-            Description = "Description"
-        });
-        
-        _now = DateTime.Parse("2024-02-03");
-        
-        var updateResponse = _expenseService.Update(createResponse.Id, new UpdateExpenseRequest
-        {
-            CategoryName = "Food",
-            Amount = 15,
-            Description = "New Description"
-        });
-        
-        Assert.Equal(1, updateResponse.Id);
-        Assert.Equal(15, updateResponse.Amount);
-        Assert.Equal("Food", updateResponse.CategoryName);
-        Assert.Equal("New Description", updateResponse.Description);
-        Assert.Equal(createResponse.CreatedAt, updateResponse.CreatedAt);
-        Assert.Equal(DateTime.Parse("2024-02-03"), updateResponse.UpdatedAt);
-    }
-    
-    [Fact]
-    public void ById()
-    {
-        var registerExpenseResponse = _expenseService.Register(new CreateExpenseRequest
-        {
-            CategoryName = "Groceries",
-            Amount = 10,
-            Description = "Description"
+            Description = "description"
         });
 
         var expenseResponse = _expenseService.ById(registerExpenseResponse.Id);
-        
-        Assert.Equal(1, registerExpenseResponse.Id);
-        Assert.Equal(10, registerExpenseResponse.Amount);
-        Assert.Equal("Groceries", registerExpenseResponse.CategoryName);
-        Assert.Equal("Description", registerExpenseResponse.Description);
-    }
-    
-    [Fact]
-    public void ById_NotFound()
-    {
-        var expenseResponse = _expenseService.ById(1);
-        Assert.Null(expenseResponse);
+  
+        Assert.Equal(1, expense.Id);
+        Assert.Equal(10, expense.Amount);
+        Assert.Equal("Groceries", expense.Category);
+        Assert.Equal("description", expense.Description);
     }
 
     [Fact]
@@ -127,15 +39,17 @@ public class ExpensesServiceTests
     {
         _expenseService.Register(new CreateExpenseRequest
         {
-            CategoryName = "Groceries",
+
+            Category = "Groceries",
             Amount = 10,
-            Description = "My Description"
+            Description = "description"
         });
         
         _expenseService.Register(new CreateExpenseRequest
         {
-            CategoryName = "Entertainment",
-            Amount = 20
+            Category = "Entertainment",
+            Amount = 20,
+            Description = "Description_2"
         });
 
         var allExpenses = _expenseService.Search()
@@ -196,8 +110,25 @@ public class ExpensesServiceTests
         
         Assert.Equal(1, _expensesRepository.Count());
     }
-    
     [Fact]
-    public void Delete_NotFound() => 
-        Assert.False(_expenseService.Delete(1));
+    public void Delete(){
+
+        _expenseService.RegisterExpense(new Expense
+        {
+            Category = "Groceriess",
+            Amount = 10,
+            Description = "description"
+        });
+        _expenseService.RegisterExpense(new Expense
+        {
+            Category = "Groceriess",
+            Amount = 112,
+            Description = "description"
+        });
+
+        Assert.True(_expenseService.Delete(1));
+
+        Assert.Equal(1, _expensesRepository.Count());
+    }
+}
 }

@@ -1,4 +1,5 @@
 using Okane.Domain;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Okane.Application;
 
@@ -24,34 +25,24 @@ public class InMemoryExpensesRepository : IExpensesRepository
         expense.Id = _nextId++;
         _expenses.Add(expense);
     }
+    public void Delete(int id) { 
+        var expenseRemove = _expenses.FirstOrDefault(Expense => Expense.Id == id);
 
-    public IEnumerable<Expense> Search(string? categoryName = null) => 
-        categoryName != null 
-            ? _expenses.Where(expense => expense.CategoryName == categoryName) 
-            : _expenses;
-
-    public void Delete(int id)
-    {
-        var expenseToDelete = _expenses
-            .First(expense => expense.Id == id);
-        _expenses.Remove(expenseToDelete);
+        if (expenseRemove != null) { 
+        
+            _expenses.Remove(expenseRemove);    
+        }
     }
 
-    public Expense? ById(int id) => 
-        _expenses.FirstOrDefault(expense => expense.Id == id);
+    public Expense byId(int id) {
+         return _expenses.FirstOrDefault(expense => expense.Id == id);
+    }
+    public IEnumerable<Expense> All() => _expenses;
 
-    public Expense Update(int id, UpdateExpenseRequest request, Category category)
+    public int Count()
     {
-        // TODO: Add test for not found
-        var expense = _expenses.First(e => e.Id == id);
-
-        expense.Category = category;
-        expense.Amount = request.Amount;
-        expense.Description = request.Description;
-        expense.UpdatedAt = _getCurrentTime();
-
-        return expense;
+        return _expenses.Count;
     }
 
-    public int Count() => _expenses.Count;
+
 }
